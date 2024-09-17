@@ -1,19 +1,19 @@
 #ifndef HEAPSORTSNAPSHOT_H
 #define HEAPSORTSNAPSHOT_H
 
-#include <QList>
+#include <vector>
 
 class HeapSortSnapshot
 {
 public:
-    explicit HeapSortSnapshot(const QList<int>& tree, int greaterComparedNodeIndex, int smallerComparedNodeIndex, int sortedBoundIndex)
+    explicit HeapSortSnapshot(const std::vector<int>& tree, int greaterComparedNodeIndex, int smallerComparedNodeIndex, int sortedBoundIndex)
         : m_tree(tree)
         , m_greaterComparedNodeIndex(greaterComparedNodeIndex)
         , m_smallerComparedNodeIndex(smallerComparedNodeIndex)
         , m_sortedBoundIndex(sortedBoundIndex)
     {}
 
-    [[nodiscard]] const QList<int>& getTree() const { return m_tree; }
+    [[nodiscard]] const std::vector<int>& getTree() const { return m_tree; }
 
     [[nodiscard]] int getGreaterComparedNodeIndex() const { return m_greaterComparedNodeIndex; }
 
@@ -22,7 +22,7 @@ public:
     [[nodiscard]] int getSortedBoundIndex() const { return m_sortedBoundIndex; }
 
 private:
-    const QList<int> m_tree;
+    const std::vector<int> m_tree;
     const int m_greaterComparedNodeIndex;
     const int m_smallerComparedNodeIndex;
     const int m_sortedBoundIndex;

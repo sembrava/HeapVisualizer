@@ -1,18 +1,18 @@
 #ifndef REMOVEMAXSNAPSHOT_H
 #define REMOVEMAXSNAPSHOT_H
 
-#include <QList>
+#include <vector>
 
 class RemoveMaxSnapshot
 {
-    explicit RemoveMaxSnapshot(const QList<int>& tree, int greaterComparedNodeIndex, int smallerComparedNodeIndex, int extractedNodeKey)
+    explicit RemoveMaxSnapshot(const std::vector<int>& tree, int greaterComparedNodeIndex, int smallerComparedNodeIndex, int extractedNodeKey)
         : m_tree(tree)
         , m_greaterComparedNodeIndex(greaterComparedNodeIndex)
         , m_smallerComparedNodeIndex(smallerComparedNodeIndex)
         , m_extractedNodeKey(extractedNodeKey)
     {}
 
-    [[nodiscard]] const QList<int>& getTree() const { return m_tree; }
+    [[nodiscard]] const std::vector<int>& getTree() const { return m_tree; }
 
     [[nodiscard]] int getGreaterComparedNodeIndex() const { return m_greaterComparedNodeIndex; }
 
@@ -21,7 +21,7 @@ class RemoveMaxSnapshot
     [[nodiscard]] int getExtractedNodeKey() const { return m_extractedNodeKey; }
 
 private:
-    const QList<int> m_tree;
+    const std::vector<int> m_tree;
     const int m_greaterComparedNodeIndex;
     const int m_smallerComparedNodeIndex;
     const int m_extractedNodeKey;
