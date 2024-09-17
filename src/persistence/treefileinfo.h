@@ -8,11 +8,14 @@
 class TreeFileInfo
 {
 public:
-    TreeFileInfo(const std::string& name, const std::vector<int>& tree);
+    explicit TreeFileInfo(const std::string& name, const std::vector<int>& tree)
+        : m_name(name)
+        , m_tree(tree)
+    {}
 
-    const std::string& getName() const;
+    [[nodiscard]] const std::string& getName() const { return m_name; }
 
-    const std::vector<int>& getTree() const;
+    [[nodiscard]] const std::vector<int>& getTree() const { return m_tree; }
 
 private:
     const std::string m_name;
