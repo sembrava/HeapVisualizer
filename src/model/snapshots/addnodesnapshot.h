@@ -3,10 +3,10 @@
 
 #include <vector>
 
-class HeapSortSnapshot
+class AddNodeSnapshot
 {
 public:
-    explicit HeapSortSnapshot(const std::vector<int>& tree, int greaterComparedNodeIndex, int smallerComparedNodeIndex)
+    explicit AddNodeSnapshot(const std::vector<int>& tree, int greaterComparedNodeIndex, int smallerComparedNodeIndex)
         : m_tree(tree)
         , m_greaterComparedNodeIndex(greaterComparedNodeIndex)
         , m_smallerComparedNodeIndex(smallerComparedNodeIndex)
