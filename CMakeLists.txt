@@ -24,12 +24,13 @@ qt_add_qml_module(appHeapVisualizer
         SOURCES src/persistence/csvfilemanager.h src/persistence/csvfilemanager.cpp
         SOURCES src/utils/utils.h
         SOURCES src/utils/utils.cpp
-        SOURCES src/model/heapalgorithmvisualizer.h
+        SOURCES
         SOURCES src/model/snapshots/heapsortsnapshot.h
         SOURCES src/model/snapshots/removemaxsnapshot.h
         SOURCES src/model/snapshots/addnodesnapshot.h
         SOURCES src/model/heapalgorithms.h
         SOURCES src/model/heapalgorithms.cpp
+        SOURCES src/model/visualizers/heapalgorithmvisualizer.h
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

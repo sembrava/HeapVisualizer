@@ -12,6 +12,8 @@ public:
 
     virtual void stepBackward() = 0;
 
+    virtual void generateSnapshots() = 0;
+
 signals:
     void comparedNodeIndexesChanged(int greater, int smaller);
 
