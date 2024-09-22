@@ -24,6 +24,9 @@
 #define NODE_ADDED_EXPLANATION(key) \
     tr("The new node (%1) is inserted at the end of the tree").arg(key)
 
+#define ROOT_AND_LAST_NODE_SWAPPED_EXPLANATION(root, lastNode) \
+    tr("The root (%1) is swapped with the last node (%2)").arg(root).arg(lastNode)
+
 class HeapAlgorithmVisualizer : public QObject
 {
     Q_OBJECT

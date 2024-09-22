@@ -22,7 +22,7 @@ std::vector<HeapSortSnapshot> HeapAlgorithms::heapSort(std::vector<int>& array, 
         createSnapshot(snapshots, array, i, 0, std::nullopt);
         createSnapshot(snapshots, array, i, 0, i - 1); // second snapshot indicating the change in the sorted bound
 
-        sink(snapshots, array, 0, i - 1, std::nullopt);
+        sink(snapshots, array, 0, i - 1, std::optional<int>{});
     }
 
     return snapshots;

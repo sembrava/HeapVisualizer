@@ -6,6 +6,7 @@
 
 class RemoveMaxSnapshot
 {
+public:
     explicit RemoveMaxSnapshot(
         const std::vector<int>& tree,
         std::optional<int> greaterComparedNodeIndex,
