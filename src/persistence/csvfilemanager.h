@@ -8,13 +8,13 @@ class CsvFileManager : FileManager
 public:
     explicit CsvFileManager(const std::string& path);
 
-    TreeFileInfo load(const std::string &name);
+    TreeFileInfo load(const std::string &name) override;
 
-    std::vector<TreeFileInfo> loadAll();
+    std::vector<TreeFileInfo> loadAll() override;
 
-    void save(const std::string &name, const std::vector<int> &tree);
+    void save(const std::string &name, const std::vector<int> &tree) override;
 
-    void remove(const std::string &name);
+    void remove(const std::string &name) override;
 
 private:
     const std::string m_path;

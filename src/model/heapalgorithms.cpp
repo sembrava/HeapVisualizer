@@ -17,13 +17,12 @@ std::vector<HeapSortSnapshot> HeapAlgorithms::heapSort(std::vector<int>& array, 
 
     for (int i = array.size() - 1; i > 0; i--)
     {
-        createSnapshot(snapshots, array, i, 0, i - 1);
-
         Utils::swap(array[0], array[i]);
 
-        createSnapshot(snapshots, array, i, 0, i - 1);
+        createSnapshot(snapshots, array, i, 0, std::nullopt);
+        createSnapshot(snapshots, array, i, 0, i - 1); // second snapshot indicating the change in the sorted bound
 
-        sink(snapshots, array, 0, i - 1, i - 1);
+        sink(snapshots, array, 0, i - 1, std::nullopt);
     }
 
     return snapshots;
