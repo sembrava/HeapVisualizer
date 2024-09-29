@@ -8,7 +8,9 @@
 
 class FileManager
 {
-public:    
+public:
+    virtual ~FileManager() = default;
+
     virtual TreeFileInfo load(const std::string& name) = 0;
 
     virtual std::vector<TreeFileInfo> loadAll() = 0;

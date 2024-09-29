@@ -3,7 +3,7 @@
 
 #include "filemanager.h"
 
-class CsvFileManager : FileManager
+class CsvFileManager : public FileManager
 {
 public:
     explicit CsvFileManager(const std::string& path);
