@@ -40,6 +40,7 @@ Window {
                     id: editorButton
                     width: 60
                     text: qsTr("Editor")
+                    enabled: false
 
                     onClicked: {
                         onPageSwitched("Editor")
@@ -50,6 +51,8 @@ Window {
                     id: visualizerButton
                     width: 60
                     text: qsTr("Visualizer")
+                    enabled: false
+
                     onClicked: {
                         onPageSwitched("Visualizer")
                     }
@@ -71,31 +74,38 @@ Window {
         }
     }
 
-    function onPageSwitched(pageName) {
+    function onPageSwitched(pageName, tree) {
         switch (pageName) {
             case "Home":
                 pageLoader.source = "qrc:/HeapVisualizer/src/view/ui/pages/HomePage.qml"
+
                 homeButton.enabled = false
-                editorButton.enabled = true
-                visualizerButton.enabled = true
+                editorButton.enabled = false
+                visualizerButton.enabled = false
+
                 break
 
             case "Editor":
                 pageLoader.source = "qrc:/HeapVisualizer/src/view/ui/pages/EditorPage.qml"
+
                 homeButton.enabled = true
                 editorButton.enabled = false
                 visualizerButton.enabled = true
+
                 break
 
             case "Visualizer":
                 pageLoader.source = "qrc:/HeapVisualizer/src/view/ui/pages/VisualizerPage.qml"
+
                 homeButton.enabled = true
                 editorButton.enabled = true
                 visualizerButton.enabled = false
+
                 break
 
             default:
                 console.log("Something went wrong")
+
                 break
         }
     }

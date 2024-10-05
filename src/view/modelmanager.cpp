@@ -1,5 +1,8 @@
 #include <QQmlEngine>
+#include <vector>
+#include <QVariant>
 
+#include "src/model/visualizers/heapsortvisualizer.h"
 #include "modelmanager.h"
 #include "models/homemodel.h"
 #include "models/editormodel.h"
@@ -15,14 +18,19 @@ QObject* ModelManager::createHomePageModel()
     return configureModel(new HomeModel(g_fileManager));
 }
 
-QObject* ModelManager::createEditorPageModel()
+QObject* ModelManager::createEditorPageModel(QVariantList tree)
 {
-    return configureModel(new EditorModel(QList<int>{ 65, 13, 45, 3, 56, 234, 624, 23, 53, 64, 524, 623, 632, 1234, 523 }, g_fileManager));
+    return configureModel(new EditorModel(tree, g_fileManager));
 }
 
-QObject* ModelManager::createVisualizerPageModel()
+QObject* ModelManager::createVisualizerPageModel(QVariantList tree)
 {
-    return configureModel(new VisualizerModel());
+    std::vector<int> vectorTree;
+
+    for (const QVariant& node : tree)
+        vectorTree.push_back(qvariant_cast<int>(node));
+
+    return configureModel(new VisualizerModel(tree, g_fileManager, new HeapSortVisualizer(vectorTree, true)));
 }
 
 QObject* ModelManager::configureModel(QObject* object)

@@ -81,16 +81,17 @@ private:
             if (array[smallerIndex] < array[greaterIndex])
             {
                 Utils::swap(array[smallerIndex], array[greaterIndex]);
-                smallerIndex = greaterIndex;
-                greaterIndex = Utils::getLeftChild(greaterIndex);
 
                 createSnapshot(snapshots, array, greaterIndex, smallerIndex, std::forward<TArgs>(args)...);
+
+                smallerIndex = greaterIndex;
+                greaterIndex = Utils::getLeftChild(greaterIndex);
             }
 
             else break;
         }
 
-        createSnapshot(snapshots, array, greaterIndex, smallerIndex, std::forward<TArgs>(args)...);
+        //createSnapshot(snapshots, array, greaterIndex, smallerIndex, std::forward<TArgs>(args)...);
     }
 
     /**

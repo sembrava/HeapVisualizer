@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
+#include "src/view/models/completebinarytree.h"
 #include "view/modelmanager.h"
 
 int main(int argc, char *argv[])
@@ -10,8 +11,13 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
+    qRegisterMetaType<CompleteBinaryTree*>("CompleteBinaryTree");
+
     ModelManager modelManager;
     engine.rootContext()->setContextProperty("modelManager", &modelManager);
+
+    CompleteBinaryTree currentlyEditedTree("", QVariantList());
+    engine.rootContext()->setContextProperty("currentlyEditedTree", &currentlyEditedTree);
 
     const QUrl url(QStringLiteral("qrc:/HeapVisualizer/src/view/ui/Main.qml"));
 

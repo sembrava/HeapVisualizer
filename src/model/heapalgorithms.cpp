@@ -20,10 +20,12 @@ std::vector<HeapSortSnapshot> HeapAlgorithms::heapSort(std::vector<int>& array, 
         Utils::swap(array[0], array[i]);
 
         createSnapshot(snapshots, array, i, 0, std::nullopt);
-        createSnapshot(snapshots, array, i, 0, i - 1); // second snapshot indicating the change in the sorted bound
+        createSnapshot(snapshots, array, i, 0, i); // second snapshot indicating the change in the sorted bound
 
-        sink(snapshots, array, 0, i - 1, std::optional<int>{});
+        sink(snapshots, array, 0, i - 1, std::nullopt);
     }
+
+    createSnapshot(snapshots, array, 0, 0, 0);
 
     return snapshots;
 }

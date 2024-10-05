@@ -37,11 +37,11 @@ public:
     virtual void stepBackward() = 0;
 
 signals:
-    void comparedNodeIndexesChanged(int greater, int smaller);
+    void nodesHighlighted(int greater, int smaller);
 
-    void comparedNodesSwapped(int greater, int smaller);
+    void nodesSwapped(int greater, int smaller);
 
-    void sortedBoundIndexChanged(int bound);
+    void sortedBoundChanged(int newBound);
 
     void nodeExtracted();
 

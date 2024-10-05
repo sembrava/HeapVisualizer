@@ -2,21 +2,21 @@
 #define HOMEMODEL_H
 
 #include <QObject>
-#include "completebinarytree.h"
+#include <QVariant>
 #include "../../persistence/filemanager.h"
 
 class HomeModel : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QList<CompleteBinaryTree*> savedVisualizations READ getSavedVisualizations NOTIFY savedVisualizationsChanged)
+    Q_PROPERTY(QVariantList savedVisualizations READ getSavedVisualizations NOTIFY savedVisualizationsChanged)
 
 public:
     explicit HomeModel(FileManager* fileManager, QObject* parent = nullptr);
 
     virtual ~HomeModel();
 
-    QList<CompleteBinaryTree*> getSavedVisualizations() const { return m_savedVisualizations; }
+    QVariantList getSavedVisualizations() const { return m_savedVisualizations; }
 
     Q_INVOKABLE void openVisualization(int index) const;
 
@@ -27,7 +27,7 @@ signals:
 
 private:
     FileManager* m_fileManager;
-    QList<CompleteBinaryTree*> m_savedVisualizations;
+    QVariantList m_savedVisualizations;
 };
 
 #endif // HOMEMODEL_H

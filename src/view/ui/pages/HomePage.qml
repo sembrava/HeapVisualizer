@@ -70,7 +70,7 @@ Item {
                         text: "x"
 
                         onClicked: {
-                            homeModel.deleteVisualization(index)
+
                         }
                     }
 
@@ -79,6 +79,13 @@ Item {
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom
                         text: qsTr("Open")
+
+                        onClicked: {
+                            currentlyEditedTree.name = modelData.name
+                            currentlyEditedTree.tree = modelData.tree
+
+                            switchPage("Editor")
+                        }
                     }
                 }
             }
