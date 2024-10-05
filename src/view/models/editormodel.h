@@ -2,6 +2,7 @@
 #define EDITORMODEL_H
 
 #include <QObject>
+#include <QVariant>
 
 #include "../../persistence/filemanager.h"
 
@@ -9,12 +10,12 @@ class EditorModel : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QList<int> tree READ getTree NOTIFY treeChanged)
+    Q_PROPERTY(QVariantList tree READ getTree NOTIFY treeChanged)
 
 public:
-    explicit EditorModel(const QList<int>& tree, FileManager* fileManager, QObject *parent = nullptr);
+    explicit EditorModel(QVariantList& tree, FileManager* fileManager, QObject *parent = nullptr);
 
-    QList<int> getTree() const { return m_tree; }
+    QVariantList getTree() const { return m_tree; }
 
     Q_INVOKABLE void addNode();
 
@@ -28,7 +29,7 @@ signals:
     void selectedNodeChanged();
 
 private:
-    QList<int> m_tree;
+    QVariantList m_tree;
     FileManager* m_fileManager;
     int m_selectedNode;
 };

@@ -1,9 +1,10 @@
 import QtQuick 2.15
 import QtQuick.Shapes 1.15
 import "../general"
+import "../logic/PositionCalculator.js" as PositionCalculator
 
 Item {
-    property var editorModel: modelManager.createEditorPageModel()
+    property var editorModel: modelManager.createEditorPageModel(currentlyEditedTree.tree)
     property int maxSize: 15
     property int nodeSize: 40
 
@@ -43,7 +44,7 @@ Item {
                         width: arrayContainer.width / maxSize
                         height: arrayContainer.width / maxSize
                         y: 5
-                        color: index % 2 === 0 ? "#bbbbbb" : "#aaaaaa"
+                        color: index % 2 === 0 ? "#bebebe" : "#cccccc"
 
                         Text {
                             anchors.centerIn: parent
@@ -80,8 +81,8 @@ Item {
                     width: nodeSize
                     height: nodeSize
                     radius: nodeSize / 2
-                    x: calculateXOffset(index, parent.width, nodeSize)
-                    y: calculateYOffset(index, 100, 50)
+                    x: PositionCalculator.calculateNodeXOffset(index, parent.width, nodeSize)
+                    y: PositionCalculator.calculateNodeYOffset(index, 100, 50)
                     color: "#888888"
 
                     Text {
@@ -109,25 +110,24 @@ Item {
             }
 
             Repeater {
-                model: editorModel.tree.length
+                model: editorModel.tree.length - 1
 
                 delegate: Shape {
                     id: start
-                    x: calculateStartXOffset(index, parent.width, nodeSize)
-                    y: calculateStartYOffset(index, 100, 50)
+                    x: PositionCalculator.calculateEdgeStartXOffset(index + 1, parent.width, nodeSize)
+                    y: PositionCalculator.calculateEdgeStartYOffset(index + 1, 100, 50, nodeSize)
 
                     ShapePath {
                         strokeColor: "#cccccc"
                         strokeWidth: 1
 
                         PathLine {
-                            x: calculateEndXOffset(index, parent.width, nodeSize) - start.x
-                            y: calculateEndYOffset(index, 100, 50) - start.y
+                            x: PositionCalculator.calculateEdgeEndXOffset(index + 1, parent.width, nodeSize) - start.x
+                            y: PositionCalculator.calculateEdgeEndYOffset(index + 1, 100, 50) - start.y
                         }
                     }
                 }
             }
-
         }
 
         Rectangle {
@@ -148,6 +148,7 @@ Item {
                     text: qsTr("Add Node")
 
                     onClicked: {
+                        currentlyEditedTree.addNode(1)
                         editorModel.addNode()
                     }
                 }
@@ -159,6 +160,7 @@ Item {
                     text: qsTr("Remove Node")
 
                     onClicked: {
+                        currentlyEditedTree.removeLastNode()
                         editorModel.removeNode()
                     }
                 }
@@ -179,7 +181,7 @@ Item {
                     width: 150
                     height: 35
                     enabled: editorModel.tree.length > 0
-                    text: qsTr("Visualize")
+                    text: qsTr("Visualize ->")
 
                     onClicked: {
                         switchPage("Visualizer")
@@ -187,51 +189,5 @@ Item {
                 }
             }
         }
-    }
-
-    function getLevel(index) {
-        return Math.floor(Math.log2(index + 1));
-    }
-
-    function getNodeCountByLevel(level) {
-        return Math.pow(2, level)
-    }
-
-    function getNodePositionWithinLevel(index, level) {
-        return index - (Math.pow(2, level) - 1) + 1
-    }
-
-    function calculateXOffset(index, totalWidth, nodeSize) {
-        const level = getLevel(index)
-        const nodeCount = getNodeCountByLevel(level)
-        const spaceTakenUpByNodes = nodeCount * nodeSize
-        const spaceBetweenNodes = (totalWidth - spaceTakenUpByNodes) / (nodeCount + 1)
-        const positionWithinLevel = getNodePositionWithinLevel(index, level)
-
-        return positionWithinLevel * nodeSize + positionWithinLevel * spaceBetweenNodes - nodeSize
-    }
-
-    function calculateYOffset(index, paddingBetweenLevels, topPadding) {
-        return getLevel(index) * paddingBetweenLevels + topPadding
-    }
-
-    function calculateStartXOffset(index, totalWidth, nodeSize) {
-        return calculateXOffset(getParent(index), totalWidth, nodeSize) + nodeSize / 2
-    }
-
-    function calculateStartYOffset(index, paddingBetweenLevels, topPadding) {
-        return calculateYOffset(getParent(index), paddingBetweenLevels, topPadding) + nodeSize
-    }
-
-    function calculateEndXOffset(index, totalWidth, nodeSize) {
-        return calculateXOffset(index, totalWidth, nodeSize) + nodeSize / 2
-    }
-
-    function calculateEndYOffset(index, paddingBetweenLevels, topPadding) {
-        return calculateYOffset(index, paddingBetweenLevels, topPadding)
-    }
-
-    function getParent(index) {
-        return Math.floor((index - 1) / 2)
     }
 }

@@ -1,6 +1,6 @@
 #include "editormodel.h"
 
-EditorModel::EditorModel(const QList<int>& tree, FileManager* fileManager, QObject *parent)
+EditorModel::EditorModel(QVariantList& tree, FileManager* fileManager, QObject *parent)
     : m_tree(tree)
     , m_fileManager(fileManager)
     , m_selectedNode(-1)
@@ -9,7 +9,7 @@ EditorModel::EditorModel(const QList<int>& tree, FileManager* fileManager, QObje
 
 void EditorModel::addNode()
 {
-    m_tree.append(1);
+    m_tree.append(QVariant::fromValue(1));
 
     emit treeChanged();
 }
