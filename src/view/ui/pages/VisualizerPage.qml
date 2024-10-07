@@ -5,7 +5,7 @@ import "../logic/PositionCalculator.js" as PositionCalculator
 import "../logic/Animations.js" as Animations
 
 Item {
-    property var visualizerModel: modelManager.createVisualizerPageModel(currentlyEditedTree.tree)
+    property var visualizerModel: modelManager.createVisualizerPageModel(globals.currentlyEditedTree, globals.currentAlgorithm)
     property int maxSize: 15
     property int nodeSize: 40
 

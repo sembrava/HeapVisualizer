@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QVariant>
 
+#include <src/model/visualizers/heapalgorithmvisualizer.h>
+
 class ModelManager : public QObject
 {
     Q_OBJECT
@@ -15,7 +17,7 @@ public:
 
     Q_INVOKABLE QObject* createEditorPageModel(QVariantList tree);
 
-    Q_INVOKABLE QObject* createVisualizerPageModel(QVariantList tree);
+    Q_INVOKABLE QObject* createVisualizerPageModel(QVariantList tree, const QString& algorithmName);
 
 private:
     QObject* configureModel(QObject* object);

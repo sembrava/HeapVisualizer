@@ -4,6 +4,7 @@
 
 #include "src/view/models/completebinarytree.h"
 #include "view/modelmanager.h"
+#include "view/ui/qmlglobals.h"
 
 int main(int argc, char *argv[])
 {
@@ -18,6 +19,9 @@ int main(int argc, char *argv[])
 
     CompleteBinaryTree currentlyEditedTree("", QVariantList());
     engine.rootContext()->setContextProperty("currentlyEditedTree", &currentlyEditedTree);
+
+    QmlGlobals globals;
+    engine.rootContext()->setContextProperty("globals", &globals);
 
     const QUrl url(QStringLiteral("qrc:/HeapVisualizer/src/view/ui/Main.qml"));
 

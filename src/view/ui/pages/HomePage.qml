@@ -82,8 +82,8 @@ Item {
                         text: qsTr("Open")
 
                         onClicked: {
-                            currentlyEditedTree.name = modelData.name
-                            currentlyEditedTree.tree = modelData.tree
+                            globals.currentFileName = modelData.name
+                            globals.currentlyEditedTree = modelData.tree
 
                             switchPage("Editor")
                         }
@@ -198,12 +198,12 @@ Item {
                 }
 
                 else if (generateRandomRadioButton.checked) {
-                    currentlyEditedTree.tree = homeModel.generateRandomArray(Number(randomArrayLength.text))
+                    globals.currentlyEditedTree = homeModel.generateRandomArray(Number(randomArrayLength.text))
                     switchPage("Editor")
                 }
 
                 else if (fromArrayRadioButton.checked) {
-                    currentlyEditedTree.tree = customArray.text.split(",").map(num => Number(num))
+                    globals.currentlyEditedTree = customArray.text.split(",").map(num => Number(num))
                     switchPage("Editor")
                 }
             }

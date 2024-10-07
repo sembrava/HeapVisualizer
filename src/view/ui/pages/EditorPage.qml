@@ -1,10 +1,11 @@
 import QtQuick 2.15
 import QtQuick.Shapes 1.15
+import QtQuick.Controls 2.15
 import "../general"
 import "../logic/PositionCalculator.js" as PositionCalculator
 
 Item {
-    property var editorModel: modelManager.createEditorPageModel(currentlyEditedTree.tree)
+    property var editorModel: modelManager.createEditorPageModel(globals.currentlyEditedTree)
     property int maxSize: 15
     property int nodeSize: 40
 
@@ -144,9 +145,9 @@ Item {
                         }
 
                         onTextChanged: {
-                            currentlyEditedTree.tree[index] = Number(nodeKey.text)
-                            if (array.itemAt(index)?.elementKey.text) {
+                            if (array.itemAt(index)?.elementKey.text && array.itemAt(index).elementKey.text !== nodeKey.text) {
                                 array.itemAt(index).elementKey.text = Number(nodeKey.text)
+                                globals.currentlyEditedTree[index] = Number(nodeKey.text)
                             }
                         }
                     }
@@ -172,7 +173,7 @@ Item {
                     text: qsTr("Add Node")
 
                     onClicked: {
-                        currentlyEditedTree.addNode(1)
+                        globals.currentlyEditedTree.addNode(1)
                         editorModel.addNode()
                     }
                 }
@@ -184,7 +185,7 @@ Item {
                     text: qsTr("Remove Node")
 
                     onClicked: {
-                        currentlyEditedTree.removeLastNode()
+                        globals.currentlyEditedTree.removeLastNode()
                         editorModel.removeNode()
                     }
                 }
@@ -208,8 +209,113 @@ Item {
                     text: qsTr("Visualize ->")
 
                     onClicked: {
-                        switchPage("Visualizer")
+                        algorithmSelector.open()
                     }
+                }
+            }
+        }
+    }
+
+    Popup {
+        id: algorithmSelector
+        width: 350
+        height: 300
+        anchors.centerIn: Overlay.overlay
+        modal: true
+        focus: true
+
+        background: Rectangle {
+            color: "white"
+            border.color: "#bbb"
+            radius: 5
+        }
+
+        Text {
+            id: popupTitle
+            text: qsTr("Choose algorithm")
+        }
+
+        HoverButton {
+            anchors.right: parent.right
+            text: "x"
+
+            onClicked: {
+                algorithmSelector.close()
+            }
+        }
+
+        Column {
+            anchors.topMargin: 10
+            anchors.top: popupTitle.bottom
+            spacing: 10
+
+            RadioButton {
+                id: heapSortRadioButton
+                text: qsTr("Heap sort")
+                checked: true
+            }
+
+            RadioButton {
+                id: removeMaxRadioButton
+                text: qsTr("Remove max")
+            }
+
+            RadioButton {
+                id: insertNodeRadioButton
+                text: qsTr("Insert node")
+            }
+
+            Row {
+                x: 20
+                spacing: 10
+
+                Text {
+                    text: qsTr("Key")
+                    color: insertNodeRadioButton.checked ? "#000" : "#ccc"
+                }
+
+                Rectangle {
+                    anchors.leftMargin: 10
+                    width: 50
+                    height: newNodeKey.implicitHeight
+                    border.color: insertNodeRadioButton.checked ? "#ccc" : "#eee"
+                    radius: 3
+
+                    TextInput {
+                        id: newNodeKey
+                        width: parent.width
+                        padding: 2
+                        enabled: insertNodeRadioButton.checked
+                        color: insertNodeRadioButton.checked ? "#000" : "#ccc"
+
+                        validator: IntValidator {
+                            bottom: -999
+                            top: 999
+                        }
+                    }
+                }
+            }
+        }
+
+        HoverButton {
+            text: qsTr("Start")
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+
+            onClicked: {
+                if (heapSortRadioButton.checked) {
+                    globals.currentAlgorithm = "heapSort"
+                    switchPage("Visualizer")
+                }
+
+                else if (removeMaxRadioButton.checked) {
+                    globals.currentAlgorithm = "removeMax"
+                    switchPage("Visualizer")
+                }
+
+                else if (insertNodeRadioButton.checked) {
+                    globals.currentAlgorithm = "insertNode"
+                    switchPage("Visualizer")
                 }
             }
         }
