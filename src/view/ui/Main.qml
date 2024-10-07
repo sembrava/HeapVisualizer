@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 import "general"
 
 Window {
+    id: window
     width: 960
     height: 640
     maximumWidth: width
@@ -29,7 +30,7 @@ Window {
                     id: homeButton
                     width: 60
                     text: qsTr("Home")
-                    enabled: false
+                    enabled: true
 
                     onClicked: {
                         onPageSwitched("Home")
@@ -77,6 +78,7 @@ Window {
     function onPageSwitched(pageName, tree) {
         switch (pageName) {
             case "Home":
+                currentlyEditedTree.tree = []
                 pageLoader.source = "qrc:/HeapVisualizer/src/view/ui/pages/HomePage.qml"
 
                 homeButton.enabled = false

@@ -3,13 +3,12 @@
 EditorModel::EditorModel(QVariantList& tree, FileManager* fileManager, QObject *parent)
     : m_tree(tree)
     , m_fileManager(fileManager)
-    , m_selectedNode(-1)
     , QObject(parent)
 {}
 
 void EditorModel::addNode()
 {
-    m_tree.append(QVariant::fromValue(1));
+    m_tree.append(QVariant::fromValue(QStringLiteral("")));
 
     emit treeChanged();
 }
@@ -24,7 +23,15 @@ void EditorModel::removeNode()
     emit treeChanged();
 }
 
-void EditorModel::selectNode(int index)
+void EditorModel::setNodeKey(int index, int newKey)
 {
-    m_selectedNode = index;
+    if (index >= m_tree.size() || index < 0)
+        return;
+
+    if (newKey == m_tree[index])
+        return;
+
+    m_tree[index] = newKey;
+
+    emit treeChanged();
 }

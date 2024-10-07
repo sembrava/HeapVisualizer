@@ -45,6 +45,10 @@ Item {
 
             nodes.itemAt(sortedBoundIndex).sortedBoundAnimation.start()
         }
+
+        function onExplanationChanged(explanation) {
+            explanationText.text = explanation
+        }
     }
 
     Rectangle {
@@ -280,6 +284,39 @@ Item {
                             to: "#22bd5d"
                             duration: 0
                         }
+                    }
+                }
+            }
+
+            Text {
+                id: explanationText
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 10
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                font.pixelSize: 15
+                color: "#333"
+
+                onTextChanged: {
+                    textChangedAnimation.start()
+                }
+
+                SequentialAnimation {
+                    id: textChangedAnimation
+
+                    NumberAnimation {
+                        target: explanationText
+                        property: "scale"
+                        to: 0.75
+                        duration: 0
+                    }
+
+                    NumberAnimation {
+                        target: explanationText
+                        property: "scale"
+                        to: 1
+                        duration: 250
+                        easing.type: Easing.OutBack
                     }
                 }
             }

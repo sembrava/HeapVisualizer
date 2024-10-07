@@ -1,6 +1,8 @@
 #include "homemodel.h"
 
 #include <QVariant>
+#include <random>
+
 #include "completebinarytree.h"
 
 HomeModel::HomeModel(FileManager* fileManager, QObject* parent)
@@ -42,4 +44,20 @@ void HomeModel::deleteVisualization(int index)
     m_fileManager->remove(name.toStdString());
 
     emit savedVisualizationsChanged();
+}
+
+QVariantList HomeModel::generateRandomArray(int arraySize)
+{
+    QVariantList array;
+
+    std::random_device seed;
+    std::mt19937 generator(seed());
+    std::uniform_int_distribution<> distribution(1, 100);
+
+    for (int i = 0; i < arraySize; i++)
+    {
+        array << QVariant::fromValue(distribution(generator));
+    }
+
+    return array;
 }

@@ -90,8 +90,6 @@ private:
 
             else break;
         }
-
-        //createSnapshot(snapshots, array, greaterIndex, smallerIndex, std::forward<TArgs>(args)...);
     }
 
     /**

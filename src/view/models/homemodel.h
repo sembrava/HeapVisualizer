@@ -22,6 +22,8 @@ public:
 
     Q_INVOKABLE void deleteVisualization(int index);
 
+    Q_INVOKABLE QVariantList generateRandomArray(int arraySize);
+
 signals:
     void savedVisualizationsChanged();
 

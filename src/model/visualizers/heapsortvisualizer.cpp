@@ -18,6 +18,8 @@ void HeapSortVisualizer::stepForward()
     {
         emit sortedBoundChanged(currentSnapshot.getSortedBoundIndex().value());
 
+        emit explanationChanged(SORTED_BOUND_INDEX_CHANGED_EXPLANATION(currentTree[currentSnapshot.getSortedBoundIndex().value()]));
+
         // TODO: emit step forward disable or maybe expose current snapshot index to qml and disable dynamically
     }
 
@@ -41,33 +43,29 @@ void HeapSortVisualizer::stepForward()
 
         if (currentSnapshot.getSortedBoundIndex().has_value())
         {
-            // sorted bound present, so it has changed
-
             emit sortedBoundChanged(currentSnapshot.getSortedBoundIndex().value());
 
-            emit explanationChanged(SORTED_BOUND_INDEX_CHANGED_EXPLANATION(currentSnapshot.getSortedBoundIndex().value()));
+            emit explanationChanged(SORTED_BOUND_INDEX_CHANGED_EXPLANATION(currentTree[currentSnapshot.getSortedBoundIndex().value()]));
         }
 
         else if (m_snapshots[m_currentSnapshotIndex + 1].getSortedBoundIndex().has_value())
         {
-            // next snapshot increases the sorted bound, so this snapshot was a swap between root and last node
-
             emit nodesSwapped(
                 currentSnapshot.getGreaterComparedNodeIndex(), currentSnapshot.getSmallerComparedNodeIndex()
             );
 
-            emit explanationChanged(ROOT_AND_LAST_NODE_SWAPPED_EXPLANATION(currentTree[0], currentTree[currentTree.size() - 1]));
+            emit explanationChanged(
+                ROOT_AND_LAST_NODE_SWAPPED_EXPLANATION(
+                    currentTree[0], currentTree[m_snapshots[m_currentSnapshotIndex + 1].getSortedBoundIndex().value()]
+                )
+            );
         }
 
         else
         {
-            // no sorted bound, so a swap would be in the sink stage
-
             if (currentSnapshot.getGreaterComparedNodeIndex() != previousSnapshot.getGreaterComparedNodeIndex() ||
                 currentSnapshot.getSmallerComparedNodeIndex() != previousSnapshot.getSmallerComparedNodeIndex())
             {
-                // compared nodes differ from the previous snapshot, so we're comparing new nodes
-
                 emit nodesHighlighted(
                     currentSnapshot.getGreaterComparedNodeIndex(), currentSnapshot.getSmallerComparedNodeIndex()
                 );
@@ -81,13 +79,9 @@ void HeapSortVisualizer::stepForward()
 
             else
             {
-                // compared nodes are the same as the previous snapshot
-
                 if (currentTree[currentSnapshot.getGreaterComparedNodeIndex()] == previousTree[previousSnapshot.getSmallerComparedNodeIndex()] &&
                     currentTree[currentSnapshot.getSmallerComparedNodeIndex()] == previousTree[previousSnapshot.getGreaterComparedNodeIndex()])
                 {
-                    // the values in the compared nodes are the opposite of the previous snapshot, so they've been swapped
-
                     emit nodesSwapped(
                         currentSnapshot.getGreaterComparedNodeIndex(), currentSnapshot.getSmallerComparedNodeIndex()
                     );

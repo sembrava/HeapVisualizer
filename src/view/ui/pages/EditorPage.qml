@@ -10,12 +10,30 @@ Item {
 
     signal switchPage(string pageName)
 
+    FocusScope {
+        focus: true
+
+        Keys.onPressed: {
+            editorModel.setNodeKey
+        }
+    }
+
     Rectangle {
         id: editorContainer
         anchors.fill: parent
         anchors.margins: 10
         color: "#eeeeee"
         radius: 5
+
+        MouseArea {
+            anchors.fill: parent
+
+            onClicked: {
+                for (let i = 0; i < nodes.count; i++) {
+                    nodes.itemAt(i).nodeKey.focus = false
+                }
+            }
+        }
 
         Rectangle {
             id: arrayContainer
@@ -38,19 +56,24 @@ Item {
                 anchors.bottom: arrayContainer.bottom
 
                 Repeater {
+                    id: array
                     model: maxSize
 
                     delegate: Rectangle {
+                        property var elementKey: elementKey
+
                         width: arrayContainer.width / maxSize
                         height: arrayContainer.width / maxSize
                         y: 5
-                        color: index % 2 === 0 ? "#bebebe" : "#cccccc"
+                        color: nodes.itemAt(index)?.nodeKey.focus ? "#f07b32" : index % 2 === 0 ? "#bbb" : "#ccc"
 
                         Text {
+                            id: elementKey
                             anchors.centerIn: parent
 
                             text: editorModel.tree[index] ?? ""
                             font.pixelSize: 18
+                            color: nodes.itemAt(index)?.nodeKey.focus ? "white" : "black"
                         }
                     }
                 }
@@ -73,43 +96,6 @@ Item {
             }
 
             Repeater {
-                model: editorModel.tree
-
-                delegate: Rectangle {
-                    property bool isActive: false
-
-                    width: nodeSize
-                    height: nodeSize
-                    radius: nodeSize / 2
-                    x: PositionCalculator.calculateNodeXOffset(index, parent.width, nodeSize)
-                    y: PositionCalculator.calculateNodeYOffset(index, 100, 50)
-                    color: "#888888"
-
-                    Text {
-                        anchors.centerIn: parent
-                        color: "white"
-
-                        text: editorModel.tree[index]
-                        font.pixelSize: 16
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-
-                        onClicked: {
-                            if (!isActive) {
-                                editorModel.selectNode(index)
-                            }
-
-                            parent.color = isActive ? "#888888" : "red"
-                            isActive = !isActive
-                        }
-                    }
-                }
-            }
-
-            Repeater {
                 model: editorModel.tree.length - 1
 
                 delegate: Shape {
@@ -124,6 +110,44 @@ Item {
                         PathLine {
                             x: PositionCalculator.calculateEdgeEndXOffset(index + 1, parent.width, nodeSize) - start.x
                             y: PositionCalculator.calculateEdgeEndYOffset(index + 1, 100, 50) - start.y
+                        }
+                    }
+                }
+            }
+
+            Repeater {
+                id: nodes
+                model: editorModel.tree
+
+                delegate: Rectangle {
+                    property var nodeKey: nodeKey
+
+                    width: nodeSize
+                    height: nodeSize
+                    radius: nodeSize / 2
+                    x: PositionCalculator.calculateNodeXOffset(index, parent.width, nodeSize)
+                    y: PositionCalculator.calculateNodeYOffset(index, 100, 50)
+                    color: nodeKey.focus ? "#f07b32" : "#888"
+
+                    TextInput {
+                        id: nodeKey
+                        anchors.centerIn: parent
+                        color: "white"
+                        padding: 15
+
+                        text: editorModel.tree[index]
+                        font.pixelSize: 16
+
+                        validator: IntValidator {
+                            bottom: -999
+                            top: 999
+                        }
+
+                        onTextChanged: {
+                            currentlyEditedTree.tree[index] = Number(nodeKey.text)
+                            if (array.itemAt(index)?.elementKey.text) {
+                                array.itemAt(index).elementKey.text = Number(nodeKey.text)
+                            }
                         }
                     }
                 }

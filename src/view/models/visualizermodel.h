@@ -34,6 +34,8 @@ public:
 
     void onSortedBoundChanged(int newBound);
 
+    void onExplanationChanged(const QString& explanation);
+
 signals:
     void treeChanged();
 
@@ -44,6 +46,8 @@ signals:
     void sortedBoundHighlighted(int sortedBoundIndex);
 
     void sortedBoundIndexChanged();
+
+    void explanationChanged(const QString& explanation);
 
 private:
     QVariantList m_tree;

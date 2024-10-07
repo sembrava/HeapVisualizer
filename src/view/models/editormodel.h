@@ -21,17 +21,14 @@ public:
 
     Q_INVOKABLE void removeNode();
 
-    Q_INVOKABLE void selectNode(int index);
+    Q_INVOKABLE void setNodeKey(int index, int newKey);
 
 signals:
     void treeChanged();
 
-    void selectedNodeChanged();
-
 private:
     QVariantList m_tree;
     FileManager* m_fileManager;
-    int m_selectedNode;
 };
 
 #endif // EDITORMODEL_H

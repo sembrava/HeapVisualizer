@@ -1,6 +1,6 @@
 #include "visualizermodel.h"
 
-VisualizerModel::VisualizerModel(QVariantList& tree, FileManager* fileManager, HeapAlgorithmVisualizer* visualizer, QObject *parent)
+VisualizerModel::VisualizerModel(QVariantList& tree, FileManager* fileManager, HeapAlgorithmVisualizer* visualizer, QObject* parent)
     : m_tree(tree)
     , m_fileManager(fileManager)
     , m_visualizer(visualizer)
@@ -10,6 +10,7 @@ VisualizerModel::VisualizerModel(QVariantList& tree, FileManager* fileManager, H
     connect(m_visualizer, &HeapAlgorithmVisualizer::nodesHighlighted,   this, &VisualizerModel::onNodesHighlighted);
     connect(m_visualizer, &HeapAlgorithmVisualizer::nodesSwapped,       this, &VisualizerModel::onNodesSwapped);
     connect(m_visualizer, &HeapAlgorithmVisualizer::sortedBoundChanged, this, &VisualizerModel::onSortedBoundChanged);
+    connect(m_visualizer, &HeapAlgorithmVisualizer::explanationChanged, this, &VisualizerModel::onExplanationChanged);
 }
 
 VisualizerModel::~VisualizerModel()
@@ -49,4 +50,9 @@ void VisualizerModel::onSortedBoundChanged(int newBound)
     m_sortedBoundIndex = newBound;
 
     emit sortedBoundHighlighted(newBound);
+}
+
+void VisualizerModel::onExplanationChanged(const QString& explanation)
+{
+    emit explanationChanged(explanation);
 }

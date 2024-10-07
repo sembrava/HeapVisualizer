@@ -4,10 +4,10 @@
 #include <QObject>
 
 #define COMPARED_NODE_INDEXES_CHANGED_EXPLANATION(greater, smaller) \
-    tr("The current node (%1) is compared with its greatest child (%2").arg(smaller).arg(greater)
+    tr("The current node (%1) is compared with its greatest child (%2)").arg(smaller).arg(greater)
 
 #define COMPARED_NODES_SWAPPED_EXPLANATION(greater, smaller) \
-    tr("Since %1 is greater than %2, they are swapped").arg(greater).arg(smaller)
+    tr("Since %2 is greater than %1, they are swapped").arg(greater).arg(smaller)
 
 #define COMPARED_NODES_NOT_SWAPPED_EXPLANATION(greater, smaller) \
     tr("Since %1 is not greater than %2, they are not swapped").arg(greater).arg(smaller)
@@ -25,7 +25,7 @@
     tr("The new node (%1) is inserted at the end of the tree").arg(key)
 
 #define ROOT_AND_LAST_NODE_SWAPPED_EXPLANATION(root, lastNode) \
-    tr("The root (%1) is swapped with the last node (%2)").arg(root).arg(lastNode)
+    tr("The root (%2) is swapped with the last unsorted node (%1)").arg(root).arg(lastNode)
 
 class HeapAlgorithmVisualizer : public QObject
 {
