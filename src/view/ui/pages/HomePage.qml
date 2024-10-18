@@ -71,7 +71,7 @@ Item {
                         text: "x"
 
                         onClicked: {
-
+                            homeModel.deleteVisualization(index)
                         }
                     }
 
@@ -108,7 +108,7 @@ Item {
         }
 
         Text {
-            id: popupTitle
+            id: newVisualizationTitle
             text: qsTr("Create visualization")
         }
 
@@ -123,7 +123,7 @@ Item {
 
         Column {
             anchors.topMargin: 10
-            anchors.top: popupTitle.bottom
+            anchors.top: newVisualizationTitle.bottom
             spacing: 10
 
             RadioButton {
@@ -193,6 +193,9 @@ Item {
             anchors.bottom: parent.bottom
 
             onClicked: {
+                globals.currentFileName = ""
+                globals.currentlyEditedTree = []
+
                 if (openEditorRadioButton.checked) {
                     switchPage("Editor")
                 }

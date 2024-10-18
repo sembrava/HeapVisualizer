@@ -78,7 +78,6 @@ Window {
     function onPageSwitched(pageName, tree) {
         switch (pageName) {
             case "Home":
-                currentlyEditedTree.tree = []
                 pageLoader.source = "qrc:/HeapVisualizer/src/view/ui/pages/HomePage.qml"
 
                 homeButton.enabled = false
@@ -92,7 +91,7 @@ Window {
 
                 homeButton.enabled = true
                 editorButton.enabled = false
-                visualizerButton.enabled = true
+                visualizerButton.enabled = false
 
                 break
 

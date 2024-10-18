@@ -349,6 +349,10 @@ Item {
                 Row {
                     HoverButton {
                         text: "<"
+
+                        onClicked: {
+                            visualizerModel.stepBackward()
+                        }
                     }
 
                     HoverButton {

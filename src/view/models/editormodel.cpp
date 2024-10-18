@@ -8,7 +8,7 @@ EditorModel::EditorModel(QVariantList& tree, FileManager* fileManager, QObject *
 
 void EditorModel::addNode()
 {
-    m_tree.append(QVariant::fromValue(QStringLiteral("")));
+    m_tree.append(QVariant::fromValue(0));
 
     emit treeChanged();
 }
@@ -34,4 +34,16 @@ void EditorModel::setNodeKey(int index, int newKey)
     m_tree[index] = newKey;
 
     emit treeChanged();
+}
+
+void EditorModel::saveVisualization(const QString &name, QVariantList tree)
+{
+    std::vector<int> vectorTree;
+
+    for (const QVariant& node : tree)
+    {
+        vectorTree.push_back(qvariant_cast<int>(node));
+    }
+
+    m_fileManager->save(name.toStdString(), vectorTree);
 }

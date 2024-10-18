@@ -20,7 +20,14 @@ QObject* ModelManager::createHomePageModel()
 
 QObject* ModelManager::createEditorPageModel(QVariantList tree)
 {
-    return configureModel(new EditorModel(tree, g_fileManager));
+    QVariantList treeCopy;
+
+    for (const QVariant& node : tree)
+    {
+        treeCopy.push_back(node.toInt());
+    }
+
+    return configureModel(new EditorModel(treeCopy, g_fileManager));
 }
 
 QObject* ModelManager::createVisualizerPageModel(QVariantList tree, const QString& algorithmName)

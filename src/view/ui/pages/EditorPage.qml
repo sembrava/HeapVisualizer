@@ -173,7 +173,7 @@ Item {
                     text: qsTr("Add Node")
 
                     onClicked: {
-                        globals.currentlyEditedTree.addNode(1)
+                        globals.addNode(1)
                         editorModel.addNode()
                     }
                 }
@@ -185,7 +185,7 @@ Item {
                     text: qsTr("Remove Node")
 
                     onClicked: {
-                        globals.currentlyEditedTree.removeLastNode()
+                        globals.removeLastNode()
                         editorModel.removeNode()
                     }
                 }
@@ -200,6 +200,10 @@ Item {
                     height: 35
                     enabled: editorModel.tree.length > 0
                     text: qsTr("Save")
+
+                    onClicked: {
+                        saveVisualizationPopup.open()
+                    }
                 }
 
                 HoverButton {
@@ -317,6 +321,78 @@ Item {
                     globals.currentAlgorithm = "insertNode"
                     switchPage("Visualizer")
                 }
+            }
+        }
+    }
+
+    Popup {
+        id: saveVisualizationPopup
+        width: 350
+        height: 100
+        anchors.centerIn: Overlay.overlay
+        modal: true
+        focus: true
+
+        background: Rectangle {
+            color: "white"
+            border.color: "#bbb"
+            radius: 5
+        }
+
+        Text {
+            id: saveVisualizationTitle
+            text: qsTr("Save visualization")
+        }
+
+        HoverButton {
+            anchors.right: parent.right
+            text: "x"
+
+            onClicked: {
+                saveVisualizationPopup.close()
+            }
+        }
+
+        Column {
+            anchors.top: saveVisualizationTitle.bottom
+            anchors.topMargin: 10
+            spacing: 5
+
+            Text {
+                text: qsTr("Save as")
+            }
+
+            Rectangle {
+                anchors.leftMargin: 10
+                width: 200
+                height: fileName.implicitHeight
+                border.color: "#ccc"
+                radius: 3
+
+                TextInput {
+                    id: fileName
+                    width: parent.width
+                    padding: 2
+                    color: "#000"
+                    text: globals.currentFileName
+                    focus: true
+
+                    Component.onCompleted: {
+                        fileName.selectAll()
+                    }
+                }
+            }
+        }
+
+        HoverButton {
+            text: qsTr("Save")
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+
+            onClicked: {
+                editorModel.saveVisualization(fileName.text, globals.currentlyEditedTree)
+
+                saveVisualizationPopup.close()
             }
         }
     }

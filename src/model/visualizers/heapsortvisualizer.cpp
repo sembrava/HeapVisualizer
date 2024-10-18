@@ -96,13 +96,20 @@ void HeapSortVisualizer::stepForward()
         }
     }
 
-    if (m_currentSnapshotIndex < m_snapshots.size())
+    if (m_currentSnapshotIndex < m_snapshots.size() - 1)
         m_currentSnapshotIndex++;
 }
 
 void HeapSortVisualizer::stepBackward()
 {
-    const HeapSortSnapshot& currentSnapshot = m_snapshots[m_currentSnapshotIndex];
+    if (m_currentSnapshotIndex <= 0)
+        return;
 
-    m_currentSnapshotIndex--;
+    if (m_currentSnapshotIndex < 2)
+        m_currentSnapshotIndex--;
+
+    else
+        m_currentSnapshotIndex -= 2;
+
+    stepForward();
 }

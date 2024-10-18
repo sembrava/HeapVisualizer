@@ -23,6 +23,8 @@ public:
 
     Q_INVOKABLE void setNodeKey(int index, int newKey);
 
+    Q_INVOKABLE void saveVisualization(const QString& name, QVariantList tree);
+
 signals:
     void treeChanged();
 
