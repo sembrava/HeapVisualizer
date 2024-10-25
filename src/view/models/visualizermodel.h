@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QVariant>
+#include <vector>
+
 #include <src/persistence/filemanager.h>
 #include <src/model/visualizers/heapalgorithmvisualizer.h>
 
@@ -22,17 +24,17 @@ public:
 
     int getSortedBoundIndex() const { return m_sortedBoundIndex; }
 
-    Q_INVOKABLE void setNodeKey(int index, int key);
-
     Q_INVOKABLE void stepForward();
 
     Q_INVOKABLE void stepBackward();
 
-    void onNodesSwapped(int greater, int smaller);
+    void onNodesSwapped(int greater, int smaller, const std::vector<int>& tree);
 
-    void onNodesHighlighted(int greater, int smaller);
+    void onNodesHighlighted(int greater, int smaller, const std::vector<int>& tree);
 
-    void onSortedBoundChanged(int newBound);
+    void onSortedBoundChanged(int newBound, const std::vector<int>& tree, const bool shrink);
+
+    void onVisualizationReset(const std::vector<int>& tree);
 
     void onExplanationChanged(const QString& explanation);
 
@@ -46,6 +48,10 @@ signals:
     void sortedBoundHighlighted(int sortedBoundIndex);
 
     void sortedBoundIndexChanged();
+
+    void sortedBoundReverted(int newBound);
+
+    void visualizationReset();
 
     void explanationChanged(const QString& explanation);
 

@@ -37,11 +37,13 @@ public:
     virtual void stepBackward() = 0;
 
 signals:
-    void nodesHighlighted(int greater, int smaller);
+    void nodesHighlighted(int greater, int smaller, const std::vector<int>& tree);
 
-    void nodesSwapped(int greater, int smaller);
+    void nodesSwapped(int greater, int smaller, const std::vector<int>& tree);
 
-    void sortedBoundChanged(int newBound);
+    void sortedBoundChanged(int newBound, const std::vector<int>& tree, const bool shrink = false);
+
+    void visualizationReset(const std::vector<int>& tree);
 
     void nodeExtracted();
 

@@ -20,3 +20,13 @@ void Utils::swap(int& first, int& second)
     first = second;
     second = temp;
 }
+
+QVariantList Utils::toQVariantList(const std::vector<int>& array)
+{
+    QVariantList result;
+
+    for (const int element : array)
+        result.push_back(QVariant::fromValue(element));
+
+    return result;
+}

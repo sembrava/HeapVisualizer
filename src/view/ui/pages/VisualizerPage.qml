@@ -15,9 +15,11 @@ Item {
         target: visualizerModel
 
         function onNodesSwapped(greaterNodeIndex, smallerNodeIndex) {
-            const tempIndex = visualizerModel.tree[smallerNodeIndex]
-            visualizerModel.setNodeKey(smallerNodeIndex, visualizerModel.tree[greaterNodeIndex])
-            visualizerModel.setNodeKey(greaterNodeIndex, tempIndex)
+            for (let i = 0; i < nodes.count; i++) {
+                if (Qt.colorEqual(nodes.itemAt(i).color, "#f07b32")) {
+                    nodes.itemAt(i).color = "#888888"
+                }
+            }
 
             nodes.itemAt(greaterNodeIndex).color = "#f07b32"
             nodes.itemAt(smallerNodeIndex).color = "#f07b32"
@@ -44,6 +46,18 @@ Item {
             }
 
             nodes.itemAt(sortedBoundIndex).sortedBoundAnimation.start()
+        }
+
+        function onSortedBoundReverted(sortedBoundIndex) {
+            nodes.itemAt(sortedBoundIndex).color = "#888888";
+        }
+
+        function onVisualizationReset() {
+            for (let i = 0; i < nodes.count; i++) {
+                nodes.itemAt(i).color = "#888888"
+            }
+
+            stepBackwardButton.enabled = false
         }
 
         function onExplanationChanged(explanation) {
@@ -348,7 +362,9 @@ Item {
 
                 Row {
                     HoverButton {
+                        id: stepBackwardButton
                         text: "<"
+                        enabled: false
 
                         onClicked: {
                             visualizerModel.stepBackward()
@@ -360,9 +376,12 @@ Item {
                     }
 
                     HoverButton {
+                        id: stepForwardButton
                         text: ">"
 
                         onClicked: {
+                            stepBackwardButton.enabled = true
+
                             visualizerModel.stepForward()
                         }
                     }

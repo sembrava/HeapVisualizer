@@ -3,20 +3,22 @@
 
 HeapSortVisualizer::HeapSortVisualizer(std::vector<int>& array, const bool documentHeapification)
     : m_snapshots(HeapAlgorithms::heapSort(array, documentHeapification))
-    , m_currentSnapshotIndex(0)
+    , m_currentSnapshotIndex(-1)
 {}
 
 void HeapSortVisualizer::stepForward()
 {
-    if (m_currentSnapshotIndex >= m_snapshots.size())
+    if (m_currentSnapshotIndex >= static_cast<int>(m_snapshots.size() - 1))
         return;
+
+    m_currentSnapshotIndex++;
 
     const HeapSortSnapshot& currentSnapshot = m_snapshots[m_currentSnapshotIndex];
     const std::vector<int>& currentTree = currentSnapshot.getTree();
 
     if (m_currentSnapshotIndex == m_snapshots.size() - 1 && currentSnapshot.getSortedBoundIndex().has_value())
     {
-        emit sortedBoundChanged(currentSnapshot.getSortedBoundIndex().value());
+        emit sortedBoundChanged(currentSnapshot.getSortedBoundIndex().value(), currentTree);
 
         emit explanationChanged(SORTED_BOUND_INDEX_CHANGED_EXPLANATION(currentTree[currentSnapshot.getSortedBoundIndex().value()]));
 
@@ -26,7 +28,7 @@ void HeapSortVisualizer::stepForward()
     else if (m_currentSnapshotIndex == 0)
     {
         emit nodesHighlighted(
-            currentSnapshot.getGreaterComparedNodeIndex(), currentSnapshot.getSmallerComparedNodeIndex()
+            currentSnapshot.getGreaterComparedNodeIndex(), currentSnapshot.getSmallerComparedNodeIndex(), currentTree
         );
 
         emit explanationChanged(
@@ -43,7 +45,7 @@ void HeapSortVisualizer::stepForward()
 
         if (currentSnapshot.getSortedBoundIndex().has_value())
         {
-            emit sortedBoundChanged(currentSnapshot.getSortedBoundIndex().value());
+            emit sortedBoundChanged(currentSnapshot.getSortedBoundIndex().value(), currentTree);
 
             emit explanationChanged(SORTED_BOUND_INDEX_CHANGED_EXPLANATION(currentTree[currentSnapshot.getSortedBoundIndex().value()]));
         }
@@ -51,7 +53,7 @@ void HeapSortVisualizer::stepForward()
         else if (m_snapshots[m_currentSnapshotIndex + 1].getSortedBoundIndex().has_value())
         {
             emit nodesSwapped(
-                currentSnapshot.getGreaterComparedNodeIndex(), currentSnapshot.getSmallerComparedNodeIndex()
+                currentSnapshot.getGreaterComparedNodeIndex(), currentSnapshot.getSmallerComparedNodeIndex(), currentTree
             );
 
             emit explanationChanged(
@@ -67,7 +69,7 @@ void HeapSortVisualizer::stepForward()
                 currentSnapshot.getSmallerComparedNodeIndex() != previousSnapshot.getSmallerComparedNodeIndex())
             {
                 emit nodesHighlighted(
-                    currentSnapshot.getGreaterComparedNodeIndex(), currentSnapshot.getSmallerComparedNodeIndex()
+                    currentSnapshot.getGreaterComparedNodeIndex(), currentSnapshot.getSmallerComparedNodeIndex(), currentTree
                 );
 
                 emit explanationChanged(
@@ -83,7 +85,7 @@ void HeapSortVisualizer::stepForward()
                     currentTree[currentSnapshot.getSmallerComparedNodeIndex()] == previousTree[previousSnapshot.getGreaterComparedNodeIndex()])
                 {
                     emit nodesSwapped(
-                        currentSnapshot.getGreaterComparedNodeIndex(), currentSnapshot.getSmallerComparedNodeIndex()
+                        currentSnapshot.getGreaterComparedNodeIndex(), currentSnapshot.getSmallerComparedNodeIndex(), currentTree
                     );
 
                     emit explanationChanged(
@@ -95,21 +97,27 @@ void HeapSortVisualizer::stepForward()
             }
         }
     }
-
-    if (m_currentSnapshotIndex < m_snapshots.size() - 1)
-        m_currentSnapshotIndex++;
 }
 
 void HeapSortVisualizer::stepBackward()
 {
-    if (m_currentSnapshotIndex <= 0)
+    if (m_currentSnapshotIndex < 0)
         return;
 
-    if (m_currentSnapshotIndex < 2)
-        m_currentSnapshotIndex--;
+    if (m_currentSnapshotIndex == 0)
+    {
+        m_currentSnapshotIndex = -1;
 
-    else
-        m_currentSnapshotIndex -= 2;
+        emit visualizationReset(m_snapshots[0].getTree());
+        emit explanationChanged("");
+
+        return;
+    }
+
+    if (m_snapshots[m_currentSnapshotIndex].getSortedBoundIndex().has_value())
+        emit sortedBoundChanged(m_snapshots[m_currentSnapshotIndex].getSortedBoundIndex().value() + 1, m_snapshots[m_currentSnapshotIndex].getTree(), true);
+
+    m_currentSnapshotIndex -= 2;
 
     stepForward();
 }

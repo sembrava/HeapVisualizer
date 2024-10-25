@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <string>
+#include <QVariant>
+#include <QVariantList>
 
 namespace Utils
 {
@@ -24,6 +26,8 @@ namespace Utils
     }
 
     void swap(int& first, int& second);
+
+    QVariantList toQVariantList(const std::vector<int>& array);
 }
 
 #endif // UTILS_H
