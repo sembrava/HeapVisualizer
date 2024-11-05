@@ -12,6 +12,9 @@ VisualizerModel::VisualizerModel(QVariantList& tree, FileManager* fileManager, H
     connect(m_visualizer, &HeapAlgorithmVisualizer::nodesSwapped,       this, &VisualizerModel::onNodesSwapped);
     connect(m_visualizer, &HeapAlgorithmVisualizer::sortedBoundChanged, this, &VisualizerModel::onSortedBoundChanged);
     connect(m_visualizer, &HeapAlgorithmVisualizer::visualizationReset, this, &VisualizerModel::onVisualizationReset);
+    connect(m_visualizer, &HeapAlgorithmVisualizer::nodeExtracted,      this, &VisualizerModel::onNodeExtracted);
+    connect(m_visualizer, &HeapAlgorithmVisualizer::rootKeyChanged,     this, &VisualizerModel::onRootKeyChanged);
+    connect(m_visualizer, &HeapAlgorithmVisualizer::nodeRemoved,        this, &VisualizerModel::onNodeRemoved);
     connect(m_visualizer, &HeapAlgorithmVisualizer::explanationChanged, this, &VisualizerModel::onExplanationChanged);
 }
 
@@ -70,6 +73,27 @@ void VisualizerModel::onVisualizationReset(const std::vector<int>& tree)
     m_tree = Utils::toQVariantList(tree);
 
     emit visualizationReset();
+}
+
+void VisualizerModel::onNodeExtracted(int nodeKey)
+{
+    emit nodeExtracted(nodeKey);
+}
+
+void VisualizerModel::onRootKeyChanged(const std::vector<int>& tree)
+{
+    m_tree = Utils::toQVariantList(tree);
+    emit treeChanged();
+
+    emit rootKeyChanged();
+}
+
+void VisualizerModel::onNodeRemoved(const std::vector<int>& tree)
+{
+    m_tree = Utils::toQVariantList(tree);
+    emit treeChanged();
+
+    emit nodeRemoved();
 }
 
 void VisualizerModel::onExplanationChanged(const QString& explanation)

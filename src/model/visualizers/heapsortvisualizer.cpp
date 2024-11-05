@@ -8,10 +8,17 @@ HeapSortVisualizer::HeapSortVisualizer(std::vector<int>& array, const bool docum
 
 void HeapSortVisualizer::stepForward()
 {
-    if (m_currentSnapshotIndex >= static_cast<int>(m_snapshots.size() - 1))
+    if (m_currentSnapshotIndex > static_cast<int>(m_snapshots.size() - 1))
         return;
 
     m_currentSnapshotIndex++;
+
+    if (m_currentSnapshotIndex == m_snapshots.size())
+    {
+        emit explanationChanged(HEAP_SORT_FINISHED_EXPLANATION);
+
+        return;
+    }
 
     const HeapSortSnapshot& currentSnapshot = m_snapshots[m_currentSnapshotIndex];
     const std::vector<int>& currentTree = currentSnapshot.getTree();
@@ -114,7 +121,7 @@ void HeapSortVisualizer::stepBackward()
         return;
     }
 
-    if (m_snapshots[m_currentSnapshotIndex].getSortedBoundIndex().has_value())
+    if (m_currentSnapshotIndex < m_snapshots.size() && m_snapshots[m_currentSnapshotIndex].getSortedBoundIndex().has_value())
         emit sortedBoundChanged(m_snapshots[m_currentSnapshotIndex].getSortedBoundIndex().value() + 1, m_snapshots[m_currentSnapshotIndex].getTree(), true);
 
     m_currentSnapshotIndex -= 2;

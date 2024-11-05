@@ -5,7 +5,7 @@ import "../logic/PositionCalculator.js" as PositionCalculator
 import "../logic/Animations.js" as Animations
 
 Item {
-    property var visualizerModel: modelManager.createVisualizerPageModel(globals.currentlyEditedTree, globals.currentAlgorithm)
+    property var visualizerModel: modelManager.createVisualizerPageModel(globals.currentlyEditedTree, globals.currentAlgorithm, globals.documentHeapification)
     property int maxSize: 15
     property int nodeSize: 40
 
@@ -34,6 +34,8 @@ Item {
                 }
             }
 
+            nodes.itemAt(greaterNodeIndex).color = "#f07b32"
+            nodes.itemAt(smallerNodeIndex).color = "#f07b32"
             nodes.itemAt(greaterNodeIndex).selectAnimation.start()
             nodes.itemAt(smallerNodeIndex).selectAnimation.start()
         }
@@ -45,7 +47,8 @@ Item {
                 }
             }
 
-            nodes.itemAt(sortedBoundIndex).sortedBoundAnimation.start()
+            nodes.itemAt(sortedBoundIndex).color = "#22bd5d"
+            nodes.itemAt(sortedBoundIndex).selectAnimation.start()
         }
 
         function onSortedBoundReverted(sortedBoundIndex) {
@@ -57,7 +60,33 @@ Item {
                 nodes.itemAt(i).color = "#888888"
             }
 
+            extractedNode.visible = false
+            extractedNode.x = PositionCalculator.calculateNodeXOffset(0, graphContainer.width, nodeSize)
+            extractedNode.y = PositionCalculator.calculateNodeYOffset(0, 100, 50, nodeSize)
+
             stepBackwardButton.enabled = false
+        }
+
+        function onNodeExtracted(nodeKey) {
+            for (let i = 0; i < nodes.count; i++) {
+                nodes.itemAt(i).color = "#888888"
+            }
+
+            extractedNode.visible = false
+            extractedNode.x = PositionCalculator.calculateNodeXOffset(0, graphContainer.width, nodeSize)
+            extractedNode.y = PositionCalculator.calculateNodeYOffset(0, 100, 50, nodeSize)
+
+            extractedNode.key = nodeKey
+            extractedNode.visible = true
+            extractionAnimation.start()
+        }
+
+        function onRootKeyChanged() {
+            nodes.itemAt(0).color = "#f07b32"
+            nodes.itemAt(0).selectAnimation.start()
+
+            nodes.itemAt(visualizerModel.tree.length - 1).color = "#e33d3d"
+            nodes.itemAt(visualizerModel.tree.length - 1).selectAnimation.start()
         }
 
         function onExplanationChanged(explanation) {
@@ -169,7 +198,6 @@ Item {
                 delegate: Rectangle {
                     property Animation swapAnimation: swapAnimation
                     property Animation selectAnimation: selectAnimation
-                    property Animation sortedBoundAnimation: sortedBoundAnimation
 
                     width: nodeSize
                     height: nodeSize
@@ -263,41 +291,57 @@ Item {
                                 easing.type: Easing.OutBack
                             }
                         }
+                    }
+                }
+            }
 
-                        ColorAnimation {
-                            target: nodes.itemAt(index)
-                            property: "color"
-                            to: "#f07b32"
-                            duration: 0
-                        }
+            Rectangle {
+                property string key: ""
+
+                id: extractedNode
+                width: nodeSize
+                height: nodeSize
+                radius: nodeSize / 2
+                x: PositionCalculator.calculateNodeXOffset(0, parent.width, nodeSize)
+                y: PositionCalculator.calculateNodeYOffset(0, 100, 50, nodeSize)
+                color: "blue"
+                visible: false
+                scale: 0
+
+                Text {
+                    id: extractedNodeKey
+                    anchors.centerIn: parent
+                    color: "white"
+
+                    text: parent.key
+                    font.pixelSize: 16
+                }
+
+                ParallelAnimation {
+                    id: extractionAnimation
+
+                    NumberAnimation {
+                        target: extractedNode
+                        property: "x"
+                        to: parent.width - nodeSize - 70
+                        duration: 300
+                        easing.type: Easing.OutBack
                     }
 
-                    ParallelAnimation {
-                        id: sortedBoundAnimation
+                    NumberAnimation {
+                        target: extractedNode
+                        property: "y"
+                        to: 50
+                        duration: 300
+                        easing.type: Easing.OutBack
+                    }
 
-                        SequentialAnimation {
-                            NumberAnimation {
-                                target: nodes.itemAt(index)
-                                property: "scale"
-                                to: 0
-                                duration: 0
-                            }
-
-                            NumberAnimation {
-                                target: nodes.itemAt(index)
-                                property: "scale"
-                                to: 1
-                                duration: 250
-                                easing.type: Easing.OutBack
-                            }
-                        }
-
-                        ColorAnimation {
-                            target: nodes.itemAt(index)
-                            property: "color"
-                            to: "#22bd5d"
-                            duration: 0
-                        }
+                    NumberAnimation {
+                        target: extractedNode
+                        property: "scale"
+                        to: 1
+                        duration: 300
+                        easing.type: Easing.OutBack
                     }
                 }
             }

@@ -51,6 +51,10 @@ qt_add_qml_module(appHeapVisualizer
         QML_FILES
         SOURCES
         SOURCES src/view/ui/qmlglobals.h
+        SOURCES
+        SOURCES
+        SOURCES src/model/visualizers/removemaxvisualizer.h src/model/visualizers/removemaxvisualizer.cpp
+        QML_FILES src/view/ui/logic/Utils.js
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

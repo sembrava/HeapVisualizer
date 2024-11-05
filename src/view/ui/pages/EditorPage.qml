@@ -3,6 +3,7 @@ import QtQuick.Shapes 1.15
 import QtQuick.Controls 2.15
 import "../general"
 import "../logic/PositionCalculator.js" as PositionCalculator
+import "../logic/Utils.js" as Utils
 
 Item {
     property var editorModel: modelManager.createEditorPageModel(globals.currentlyEditedTree)
@@ -302,6 +303,7 @@ Item {
         }
 
         HoverButton {
+            id: startButton
             text: qsTr("Start")
             anchors.right: parent.right
             anchors.bottom: parent.bottom
@@ -313,14 +315,33 @@ Item {
                 }
 
                 else if (removeMaxRadioButton.checked) {
-                    globals.currentAlgorithm = "removeMax"
-                    switchPage("Visualizer")
+                    if (!Utils.isMaxHeap(globals.currentlyEditedTree)) {
+                        heapifyPopup.open()
+                    }
+
+                    else {
+                        globals.currentAlgorithm = "removeMax"
+                        switchPage("Visualizer")
+                    }
                 }
 
                 else if (insertNodeRadioButton.checked) {
                     globals.currentAlgorithm = "insertNode"
                     switchPage("Visualizer")
                 }
+            }
+        }
+
+        CheckBox {
+            id: skipHeapificationCheckbox
+            text: qsTr("Skip heapification")
+            anchors.right: startButton.left
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 4
+            enabled: heapSortRadioButton.checked
+
+            onCheckedChanged: {
+                globals.documentHeapification = !skipHeapificationCheckbox.checked
             }
         }
     }
@@ -393,6 +414,72 @@ Item {
                 editorModel.saveVisualization(fileName.text, globals.currentlyEditedTree)
 
                 saveVisualizationPopup.close()
+            }
+        }
+    }
+
+    Popup {
+        id: heapifyPopup
+        width: 450
+        height: 100
+        anchors.centerIn: Overlay.overlay
+        modal: true
+        focus: true
+
+        background: Rectangle {
+            color: "white"
+            border.color: "#bbb"
+            radius: 5
+        }
+
+        Text {
+            id: heapifyTitle
+            text: qsTr("Alert")
+        }
+
+        HoverButton {
+            anchors.right: parent.right
+            text: "x"
+
+            onClicked: {
+                heapifyPopup.close()
+            }
+        }
+
+        Column {
+            anchors.top: heapifyTitle.bottom
+            anchors.topMargin: 10
+            spacing: 5
+
+            Text {
+                width: parent.width
+                wrapMode: Text.WordWrap
+                text: qsTr("The provided array does not satisfy the heap property.\nWould you like to run the algorithm on a heapified version of the array?")
+            }
+        }
+
+        HoverButton {
+            id: yesButton
+            text: qsTr("Yes")
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+
+            onClicked: {
+                nodes.model = null
+                Utils.heapify(globals.currentlyEditedTree)
+                globals.currentAlgorithm = "removeMax"
+                switchPage("Visualizer")
+            }
+        }
+
+        HoverButton {
+            id: noButton
+            text: qsTr("No")
+            anchors.right: yesButton.left
+            anchors.bottom: parent.bottom
+
+            onClicked: {
+                heapifyPopup.close()
             }
         }
     }

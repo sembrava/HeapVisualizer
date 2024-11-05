@@ -16,7 +16,10 @@
     tr("%1 is in its correct position, so it can be marked as sorted").arg(key)
 
 #define NODE_EXTRACTED_EXPLANATION(key) \
-    tr("The largest value (%1) is extracted").arg(key)
+    tr("The largest value (%1) is copied").arg(key)
+
+#define ROOT_KEY_CHANGED_EXPLANATION(rootKey, lastNodeKey) \
+    tr("The root key (%1) is replaced with the key of the last node (%2)").arg(rootKey).arg(lastNodeKey)
 
 #define NODE_REMOVED_EXPLANATION(key) \
     tr("The last node (%1) is removed").arg(key)
@@ -27,11 +30,19 @@
 #define ROOT_AND_LAST_NODE_SWAPPED_EXPLANATION(root, lastNode) \
     tr("The root (%2) is swapped with the last unsorted node (%1)").arg(root).arg(lastNode)
 
+#define HEAP_SORT_FINISHED_EXPLANATION \
+    tr("All nodes are in their correct positions")
+
+#define REMOVE_MAX_FINISHED_EXPLANATION \
+    tr("The extracted key can be returned")
+
 class HeapAlgorithmVisualizer : public QObject
 {
     Q_OBJECT
 
 public:
+    virtual ~HeapAlgorithmVisualizer() = default;
+
     virtual void stepForward() = 0;
 
     virtual void stepBackward() = 0;
@@ -45,9 +56,11 @@ signals:
 
     void visualizationReset(const std::vector<int>& tree);
 
-    void nodeExtracted();
+    void nodeExtracted(int nodeKey);
 
-    void nodeRemoved();
+    void rootKeyChanged(const std::vector<int>& tree);
+
+    void nodeRemoved(const std::vector<int>& tree);
 
     void nodeAdded();
 

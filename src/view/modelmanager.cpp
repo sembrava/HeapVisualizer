@@ -2,6 +2,8 @@
 #include <vector>
 #include <QVariant>
 
+#include <src/model/visualizers/removemaxvisualizer.h>
+
 #include "src/model/visualizers/heapsortvisualizer.h"
 #include "modelmanager.h"
 #include "models/homemodel.h"
@@ -30,7 +32,7 @@ QObject* ModelManager::createEditorPageModel(QVariantList tree)
     return configureModel(new EditorModel(treeCopy, g_fileManager));
 }
 
-QObject* ModelManager::createVisualizerPageModel(QVariantList tree, const QString& algorithmName)
+QObject* ModelManager::createVisualizerPageModel(QVariantList tree, const QString& algorithmName, const bool documentHeapification)
 {
     std::vector<int> vectorTree;
 
@@ -42,7 +44,10 @@ QObject* ModelManager::createVisualizerPageModel(QVariantList tree, const QStrin
     HeapAlgorithmVisualizer* visualizer = nullptr;
 
     if (algorithmName == "heapSort")
-        visualizer = new HeapSortVisualizer(vectorTree, true);
+        visualizer = new HeapSortVisualizer(vectorTree, documentHeapification);
+
+    else if (algorithmName == "removeMax")
+        visualizer = new RemoveMaxVisualizer(vectorTree);
 
     return configureModel(new VisualizerModel(tree, g_fileManager, visualizer));
 }

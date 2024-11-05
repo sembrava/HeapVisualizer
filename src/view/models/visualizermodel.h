@@ -36,6 +36,12 @@ public:
 
     void onVisualizationReset(const std::vector<int>& tree);
 
+    void onNodeExtracted(int nodeKey);
+
+    void onRootKeyChanged(const std::vector<int>& tree);
+
+    void onNodeRemoved(const std::vector<int>& tree);
+
     void onExplanationChanged(const QString& explanation);
 
 signals:
@@ -52,6 +58,12 @@ signals:
     void sortedBoundReverted(int newBound);
 
     void visualizationReset();
+
+    void nodeExtracted(int nodeKey);
+
+    void rootKeyChanged();
+
+    void nodeRemoved();
 
     void explanationChanged(const QString& explanation);
 
