@@ -268,6 +268,7 @@ Item {
             RadioButton {
                 id: insertNodeRadioButton
                 text: qsTr("Insert node")
+                enabled: editorModel.tree.length < 15
             }
 
             Row {
@@ -315,19 +316,28 @@ Item {
                 }
 
                 else if (removeMaxRadioButton.checked) {
+                    globals.currentAlgorithm = "removeMax"
+
                     if (!Utils.isMaxHeap(globals.currentlyEditedTree)) {
                         heapifyPopup.open()
                     }
 
                     else {
-                        globals.currentAlgorithm = "removeMax"
                         switchPage("Visualizer")
                     }
                 }
 
                 else if (insertNodeRadioButton.checked) {
+                    globals.newNodeKey = Number(newNodeKey.text)
                     globals.currentAlgorithm = "insertNode"
-                    switchPage("Visualizer")
+
+                    if (!Utils.isMaxHeap(globals.currentlyEditedTree)) {
+                        heapifyPopup.open()
+                    }
+
+                    else {
+                        switchPage("Visualizer")
+                    }
                 }
             }
         }
@@ -467,7 +477,6 @@ Item {
             onClicked: {
                 nodes.model = null
                 Utils.heapify(globals.currentlyEditedTree)
-                globals.currentAlgorithm = "removeMax"
                 switchPage("Visualizer")
             }
         }

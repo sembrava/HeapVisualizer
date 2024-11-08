@@ -5,7 +5,7 @@ import "../logic/PositionCalculator.js" as PositionCalculator
 import "../logic/Animations.js" as Animations
 
 Item {
-    property var visualizerModel: modelManager.createVisualizerPageModel(globals.currentlyEditedTree, globals.currentAlgorithm, globals.documentHeapification)
+    property var visualizerModel: modelManager.createVisualizerPageModel(globals.currentlyEditedTree, globals.currentAlgorithm, globals.documentHeapification, globals.newNodeKey)
     property int maxSize: 15
     property int nodeSize: 40
 
@@ -67,6 +67,12 @@ Item {
             stepBackwardButton.enabled = false
         }
 
+        function onVisualizationFinished() {
+            for (let i = 0; i < nodes.count; i++) {
+                nodes.itemAt(i).color = "#888888"
+            }
+        }
+
         function onNodeExtracted(nodeKey) {
             for (let i = 0; i < nodes.count; i++) {
                 nodes.itemAt(i).color = "#888888"
@@ -86,6 +92,11 @@ Item {
             nodes.itemAt(0).selectAnimation.start()
 
             nodes.itemAt(visualizerModel.tree.length - 1).color = "#e33d3d"
+            nodes.itemAt(visualizerModel.tree.length - 1).selectAnimation.start()
+        }
+
+        function onNodeAdded() {
+            nodes.itemAt(visualizerModel.tree.length - 1).color = "#f07b32"
             nodes.itemAt(visualizerModel.tree.length - 1).selectAnimation.start()
         }
 
@@ -122,6 +133,7 @@ Item {
                 anchors.bottom: arrayContainer.bottom
 
                 Repeater {
+                    id: array
                     model: maxSize
 
                     delegate: Rectangle {

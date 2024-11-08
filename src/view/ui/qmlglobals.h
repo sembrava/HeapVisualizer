@@ -12,6 +12,7 @@ class QmlGlobals : public QObject
     Q_PROPERTY(QVariantList currentlyEditedTree READ getCurrentlyEditedTree WRITE setCurrentlyEditedTree NOTIFY currentlyEditedTreeChanged);
     Q_PROPERTY(QString currentAlgorithm READ getCurrentAlgorithm WRITE setCurrentAlgorithm NOTIFY currentAlgorithmChanged);
     Q_PROPERTY(bool documentHeapification READ getDocumentHeapification WRITE setDocumentHeapification NOTIFY documentHeapificationChanged);
+    Q_PROPERTY(int newNodeKey READ getNewNodeKey WRITE setNewNodeKey NOTIFY newNodeKeyChanged);
 
 public:
     explicit QmlGlobals(QObject *parent = nullptr)
@@ -19,6 +20,7 @@ public:
         , m_currentlyEditedTree(QVariantList())
         , m_currentAlgorithm("")
         , m_documentHeapification(true)
+        , m_newNodeKey(0)
         , QObject(parent)
     {}
 
@@ -29,6 +31,8 @@ public:
     QString getCurrentAlgorithm() const { return m_currentAlgorithm; }
 
     bool getDocumentHeapification() const { return m_documentHeapification; }
+
+    int getNewNodeKey() const { return m_newNodeKey; }
 
     void setCurrentFileName(const QString& newName)
     {
@@ -54,6 +58,12 @@ public:
         emit documentHeapificationChanged();
     }
 
+    void setNewNodeKey(int newKey)
+    {
+        m_newNodeKey = newKey;
+        emit newNodeKeyChanged();
+    }
+
     Q_INVOKABLE void addNode(int key)
     {
         m_currentlyEditedTree.append(key);
@@ -76,11 +86,14 @@ signals:
 
     void documentHeapificationChanged();
 
+    void newNodeKeyChanged();
+
 private:
     QString m_currentFileName;
     QVariantList m_currentlyEditedTree;
     QString m_currentAlgorithm;
     bool m_documentHeapification;
+    int m_newNodeKey;
 };
 
 #endif // QMLGLOBALS_H

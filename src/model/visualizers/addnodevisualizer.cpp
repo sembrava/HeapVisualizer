@@ -1,13 +1,12 @@
-#include "removemaxvisualizer.h"
+#include "addnodevisualizer.h"
+#include "../heapalgorithms.h"
 
-#include <src/model/heapalgorithms.h>
-
-RemoveMaxVisualizer::RemoveMaxVisualizer(std::vector<int>& array)
-    : m_snapshots(HeapAlgorithms::removeMax(array))
+AddNodeVisualizer::AddNodeVisualizer(std::vector<int>& array, int newNodeKey)
+    : m_snapshots(HeapAlgorithms::addNode(array, newNodeKey))
     , m_currentSnapshotIndex(-1)
 {}
 
-void RemoveMaxVisualizer::stepForward()
+void AddNodeVisualizer::stepForward()
 {
     if (m_currentSnapshotIndex > static_cast<int>(m_snapshots.size() - 1))
         return;
@@ -16,44 +15,30 @@ void RemoveMaxVisualizer::stepForward()
 
     if (m_currentSnapshotIndex == m_snapshots.size())
     {
-        emit explanationChanged(REMOVE_MAX_FINISHED_EXPLANATION);
+        emit explanationChanged(ADD_NODE_FINISHED_EXPLANATION);
 
         emit visualizationFinished();
 
         return;
     }
 
-    const RemoveMaxSnapshot& currentSnapshot = m_snapshots[m_currentSnapshotIndex];
+    const AddNodeSnapshot& currentSnapshot = m_snapshots[m_currentSnapshotIndex];
     const std::vector<int>& currentTree = currentSnapshot.getTree();
 
     if (m_currentSnapshotIndex == 0)
     {
-        emit nodeExtracted(m_snapshots[0].getExtractedNodeKey());
+        emit nodeAdded(currentTree);
 
-        emit explanationChanged(NODE_EXTRACTED_EXPLANATION(m_snapshots[0].getExtractedNodeKey()));
-    }
-
-    else if (m_currentSnapshotIndex == 1)
-    {
-        emit rootKeyChanged(currentTree);
-
-        emit explanationChanged(ROOT_KEY_CHANGED_EXPLANATION(m_snapshots[m_currentSnapshotIndex - 1].getTree()[0], currentTree[currentTree.size() - 1]));
+        emit explanationChanged(NODE_ADDED_EXPLANATION(currentTree[currentTree.size() - 1]));
     }
 
     else
     {
-        const RemoveMaxSnapshot& previousSnapshot = m_snapshots[m_currentSnapshotIndex - 1];
+        const AddNodeSnapshot& previousSnapshot = m_snapshots[m_currentSnapshotIndex - 1];
         const std::vector<int>& previousTree = previousSnapshot.getTree();
 
-        if (currentSnapshot.getTree().size() < previousSnapshot.getTree().size())
-        {
-            emit nodeRemoved(currentTree);
-
-            emit explanationChanged(NODE_REMOVED_EXPLANATION(previousTree[previousTree.size() - 1]));
-        }
-
-        else if (currentSnapshot.getGreaterComparedNodeIndex().has_value() && currentSnapshot.getSmallerComparedNodeIndex().has_value() &&
-                 !previousSnapshot.getGreaterComparedNodeIndex().has_value() && !previousSnapshot.getGreaterComparedNodeIndex().has_value())
+        if (currentSnapshot.getGreaterComparedNodeIndex().has_value() && currentSnapshot.getSmallerComparedNodeIndex().has_value() &&
+            !previousSnapshot.getGreaterComparedNodeIndex().has_value() && !previousSnapshot.getGreaterComparedNodeIndex().has_value())
         {
             emit nodesHighlighted(
                 currentSnapshot.getGreaterComparedNodeIndex().value(), currentSnapshot.getSmallerComparedNodeIndex().value(), currentTree
@@ -103,7 +88,7 @@ void RemoveMaxVisualizer::stepForward()
     }
 }
 
-void RemoveMaxVisualizer::stepBackward()
+void AddNodeVisualizer::stepBackward()
 {
     if (m_currentSnapshotIndex < 0)
         return;
@@ -112,7 +97,13 @@ void RemoveMaxVisualizer::stepBackward()
     {
         m_currentSnapshotIndex = -1;
 
-        emit visualizationReset(m_snapshots[0].getTree());
+        std::vector<int> inputTree = m_snapshots[0].getTree();
+
+        inputTree.pop_back();
+
+        qDebug() << inputTree.size();
+
+        emit visualizationReset(inputTree);
         emit explanationChanged("");
 
         return;

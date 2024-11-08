@@ -36,11 +36,15 @@ public:
 
     void onVisualizationReset(const std::vector<int>& tree);
 
+    void onVisualizationFinished();
+
     void onNodeExtracted(int nodeKey);
 
     void onRootKeyChanged(const std::vector<int>& tree);
 
     void onNodeRemoved(const std::vector<int>& tree);
+
+    void onNodeAdded(const std::vector<int>& tree);
 
     void onExplanationChanged(const QString& explanation);
 
@@ -59,11 +63,15 @@ signals:
 
     void visualizationReset();
 
+    void visualizationFinished();
+
     void nodeExtracted(int nodeKey);
 
     void rootKeyChanged();
 
     void nodeRemoved();
+
+    void nodeAdded();
 
     void explanationChanged(const QString& explanation);
 

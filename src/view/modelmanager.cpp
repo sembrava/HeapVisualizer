@@ -4,6 +4,7 @@
 
 #include <src/model/visualizers/removemaxvisualizer.h>
 
+#include "src/model/visualizers/addnodevisualizer.h"
 #include "src/model/visualizers/heapsortvisualizer.h"
 #include "modelmanager.h"
 #include "models/homemodel.h"
@@ -32,7 +33,7 @@ QObject* ModelManager::createEditorPageModel(QVariantList tree)
     return configureModel(new EditorModel(treeCopy, g_fileManager));
 }
 
-QObject* ModelManager::createVisualizerPageModel(QVariantList tree, const QString& algorithmName, const bool documentHeapification)
+QObject* ModelManager::createVisualizerPageModel(QVariantList tree, const QString& algorithmName, const bool documentHeapification, const int newNodeKey)
 {
     std::vector<int> vectorTree;
 
@@ -48,6 +49,9 @@ QObject* ModelManager::createVisualizerPageModel(QVariantList tree, const QStrin
 
     else if (algorithmName == "removeMax")
         visualizer = new RemoveMaxVisualizer(vectorTree);
+
+    else if (algorithmName == "insertNode")
+        visualizer = new AddNodeVisualizer(vectorTree, newNodeKey);
 
     return configureModel(new VisualizerModel(tree, g_fileManager, visualizer));
 }

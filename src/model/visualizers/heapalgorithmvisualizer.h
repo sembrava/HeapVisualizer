@@ -36,6 +36,9 @@
 #define REMOVE_MAX_FINISHED_EXPLANATION \
     tr("The extracted key can be returned")
 
+#define ADD_NODE_FINISHED_EXPLANATION \
+    tr("The inserted node has been moved to its correct position")
+
 class HeapAlgorithmVisualizer : public QObject
 {
     Q_OBJECT
@@ -56,13 +59,15 @@ signals:
 
     void visualizationReset(const std::vector<int>& tree);
 
+    void visualizationFinished();
+
     void nodeExtracted(int nodeKey);
 
     void rootKeyChanged(const std::vector<int>& tree);
 
     void nodeRemoved(const std::vector<int>& tree);
 
-    void nodeAdded();
+    void nodeAdded(const std::vector<int>& tree);
 
     void explanationChanged(const QString& explanation);
 };

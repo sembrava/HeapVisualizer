@@ -5,17 +5,19 @@ VisualizerModel::VisualizerModel(QVariantList& tree, FileManager* fileManager, H
     : m_tree(tree)
     , m_fileManager(fileManager)
     , m_visualizer(visualizer)
-    , m_sortedBoundIndex(m_tree.size())
+    , m_sortedBoundIndex(m_tree.size() + 1)
     , QObject{parent}
 {
-    connect(m_visualizer, &HeapAlgorithmVisualizer::nodesHighlighted,   this, &VisualizerModel::onNodesHighlighted);
-    connect(m_visualizer, &HeapAlgorithmVisualizer::nodesSwapped,       this, &VisualizerModel::onNodesSwapped);
-    connect(m_visualizer, &HeapAlgorithmVisualizer::sortedBoundChanged, this, &VisualizerModel::onSortedBoundChanged);
-    connect(m_visualizer, &HeapAlgorithmVisualizer::visualizationReset, this, &VisualizerModel::onVisualizationReset);
-    connect(m_visualizer, &HeapAlgorithmVisualizer::nodeExtracted,      this, &VisualizerModel::onNodeExtracted);
-    connect(m_visualizer, &HeapAlgorithmVisualizer::rootKeyChanged,     this, &VisualizerModel::onRootKeyChanged);
-    connect(m_visualizer, &HeapAlgorithmVisualizer::nodeRemoved,        this, &VisualizerModel::onNodeRemoved);
-    connect(m_visualizer, &HeapAlgorithmVisualizer::explanationChanged, this, &VisualizerModel::onExplanationChanged);
+    connect(m_visualizer, &HeapAlgorithmVisualizer::nodesHighlighted,      this, &VisualizerModel::onNodesHighlighted);
+    connect(m_visualizer, &HeapAlgorithmVisualizer::nodesSwapped,          this, &VisualizerModel::onNodesSwapped);
+    connect(m_visualizer, &HeapAlgorithmVisualizer::sortedBoundChanged,    this, &VisualizerModel::onSortedBoundChanged);
+    connect(m_visualizer, &HeapAlgorithmVisualizer::visualizationReset,    this, &VisualizerModel::onVisualizationReset);
+    connect(m_visualizer, &HeapAlgorithmVisualizer::visualizationFinished, this, &VisualizerModel::onVisualizationFinished);
+    connect(m_visualizer, &HeapAlgorithmVisualizer::nodeExtracted,         this, &VisualizerModel::onNodeExtracted);
+    connect(m_visualizer, &HeapAlgorithmVisualizer::rootKeyChanged,        this, &VisualizerModel::onRootKeyChanged);
+    connect(m_visualizer, &HeapAlgorithmVisualizer::nodeRemoved,           this, &VisualizerModel::onNodeRemoved);
+    connect(m_visualizer, &HeapAlgorithmVisualizer::nodeAdded,             this, &VisualizerModel::onNodeAdded);
+    connect(m_visualizer, &HeapAlgorithmVisualizer::explanationChanged,    this, &VisualizerModel::onExplanationChanged);
 }
 
 VisualizerModel::~VisualizerModel()
@@ -71,8 +73,14 @@ void VisualizerModel::onSortedBoundChanged(int newBound, const std::vector<int>&
 void VisualizerModel::onVisualizationReset(const std::vector<int>& tree)
 {
     m_tree = Utils::toQVariantList(tree);
+    emit treeChanged();
 
     emit visualizationReset();
+}
+
+void VisualizerModel::onVisualizationFinished()
+{
+    emit visualizationFinished();
 }
 
 void VisualizerModel::onNodeExtracted(int nodeKey)
@@ -94,6 +102,14 @@ void VisualizerModel::onNodeRemoved(const std::vector<int>& tree)
     emit treeChanged();
 
     emit nodeRemoved();
+}
+
+void VisualizerModel::onNodeAdded(const std::vector<int>& tree)
+{
+    m_tree = Utils::toQVariantList(tree);
+    emit treeChanged();
+
+    emit nodeAdded();
 }
 
 void VisualizerModel::onExplanationChanged(const QString& explanation)

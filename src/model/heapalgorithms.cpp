@@ -68,21 +68,20 @@ std::vector<AddNodeSnapshot> HeapAlgorithms::addNode(std::vector<int>& array, co
     int greaterIndex = array.size() - 1;
     int smallerIndex = Utils::getParent(greaterIndex);
 
-    while (smallerIndex >= 0)
+    while (smallerIndex >= 0 && array[smallerIndex] < array[greaterIndex] && smallerIndex != greaterIndex)
     {
         createSnapshot(snapshots, array, greaterIndex, smallerIndex);
 
-        if (array[smallerIndex] < array[greaterIndex])
-        {
-            Utils::swap(array[smallerIndex], array[greaterIndex]);
+        Utils::swap(array[smallerIndex], array[greaterIndex]);
 
-            createSnapshot(snapshots, array, greaterIndex, smallerIndex);
-        }
+        createSnapshot(snapshots, array, greaterIndex, smallerIndex);
 
-        else break;
+        greaterIndex = smallerIndex;
+        smallerIndex = Utils::getParent(greaterIndex);
     }
 
-    createSnapshot(snapshots, array, greaterIndex, smallerIndex);
+    if (smallerIndex != greaterIndex)
+        createSnapshot(snapshots, array, greaterIndex, smallerIndex);
 
     return snapshots;
 }
