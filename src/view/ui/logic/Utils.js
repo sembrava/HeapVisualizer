@@ -38,3 +38,22 @@ function sink(array, i, max) {
         sink(array, largest, max);
     }
 }
+
+function isValidArrayLiteral(input) {
+    const tokens = input.split(",");
+
+    if (tokens.length > 15 || tokens.length === 0 && tokens[0] === "")
+        return false;
+
+    for (let i = 0; i < tokens.length; i++) {
+        if (tokens[i] === "")
+            return false;
+
+        const num = Number(tokens[i]);
+
+        if (Number.isNaN(num) || num > 999 || num < -999)
+            return false;
+    }
+
+    return true;
+}

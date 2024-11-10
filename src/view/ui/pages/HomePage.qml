@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "../general"
+import "../logic/Utils.js" as Utils
 
 Item {
     property var homeModel: modelManager.createHomePageModel()
@@ -107,6 +108,10 @@ Item {
             radius: 5
         }
 
+        onClosed: {
+            customArrayError.visible = false
+        }
+
         Text {
             id: newVisualizationTitle
             text: qsTr("Create visualization")
@@ -139,7 +144,7 @@ Item {
 
             Row {
                 x: 20
-                spacing: 10
+                spacing: 5
 
                 Text {
                     text: qsTr("Array size")
@@ -160,6 +165,10 @@ Item {
                         enabled: generateRandomRadioButton.checked
                         text: "15"
                         color: generateRandomRadioButton.checked ? "#000" : "#ccc"
+
+                        validator: RegularExpressionValidator {
+                            regularExpression: /^[1-9]$|^1[0-5]$/
+                        }
                     }
                 }
             }
@@ -167,9 +176,15 @@ Item {
             RadioButton {
                 id: fromArrayRadioButton
                 text: qsTr("Create from array")
+
+                onCheckedChanged: {
+                    if (!checked)
+                        customArrayError.visible = false
+                }
             }
 
             Rectangle {
+                id: customArrayContainer
                 x: 20
                 anchors.leftMargin: 10
                 width: 200
@@ -184,6 +199,15 @@ Item {
                     enabled: fromArrayRadioButton.checked
                     color: fromArrayRadioButton.checked ? "#000" : "#ccc"
                 }
+
+                Text {
+                    id: customArrayError
+                    text: qsTr("Input must be at most 15 comma separated numbers from -999 to 999")
+                    font.pixelSize: 10
+                    color: "red"
+                    y: 20
+                    visible: false
+                }
             }
         }
 
@@ -193,6 +217,11 @@ Item {
             anchors.bottom: parent.bottom
 
             onClicked: {
+                if (!Utils.isValidArrayLiteral(customArray.text)) {
+                    customArrayError.visible = true
+                    return;
+                }
+
                 globals.currentFileName = ""
                 globals.currentlyEditedTree = []
 
