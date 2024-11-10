@@ -11,11 +11,16 @@ class EditorModel : public QObject
     Q_OBJECT
 
     Q_PROPERTY(QVariantList tree READ getTree NOTIFY treeChanged)
+    Q_PROPERTY(int currentlySelectedNodeIndex READ getCurrentlySelectedNodeIndex WRITE setCurrentlySelectedNodeIndex NOTIFY currentlySelectedNodeIndexChanged)
 
 public:
     explicit EditorModel(QVariantList& tree, FileManager* fileManager, QObject *parent = nullptr);
 
     QVariantList getTree() const { return m_tree; }
+
+    int getCurrentlySelectedNodeIndex() const { return m_currentlySelectedNodeIndex; }
+
+    void setCurrentlySelectedNodeIndex(int newIndex);
 
     Q_INVOKABLE void addNode();
 
@@ -28,9 +33,12 @@ public:
 signals:
     void treeChanged();
 
+    void currentlySelectedNodeIndexChanged();
+
 private:
     QVariantList m_tree;
     FileManager* m_fileManager;
+    int m_currentlySelectedNodeIndex;
 };
 
 #endif // EDITORMODEL_H

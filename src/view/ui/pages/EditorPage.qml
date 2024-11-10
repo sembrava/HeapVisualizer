@@ -12,20 +12,13 @@ Item {
 
     signal switchPage(string pageName)
 
-    FocusScope {
-        focus: true
-
-        Keys.onPressed: {
-            editorModel.setNodeKey
-        }
-    }
-
     Rectangle {
         id: editorContainer
         anchors.fill: parent
         anchors.margins: 10
         color: "#eeeeee"
         radius: 5
+        clip: true
 
         MouseArea {
             anchors.fill: parent
@@ -43,7 +36,6 @@ Item {
             height: 80
             anchors.top: parent.top
             color: "#dddddd"
-            radius: 5
 
             Text {
                 id: arrayLabel
@@ -56,6 +48,9 @@ Item {
 
             Row {
                 anchors.bottom: arrayContainer.bottom
+                anchors.bottomMargin: 10
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: 7
 
                 Repeater {
                     id: array
@@ -64,10 +59,11 @@ Item {
                     delegate: Rectangle {
                         property var elementKey: elementKey
 
-                        width: arrayContainer.width / maxSize
-                        height: arrayContainer.width / maxSize
+                        width: 50
+                        height: width
                         y: 5
-                        color: nodes.itemAt(index)?.nodeKey.focus ? "#f07b32" : index % 2 === 0 ? "#bbb" : "#ccc"
+                        radius: 5
+                        color: "#bbb"
 
                         Text {
                             id: elementKey
@@ -75,7 +71,17 @@ Item {
 
                             text: editorModel.tree[index] ?? ""
                             font.pixelSize: 18
-                            color: nodes.itemAt(index)?.nodeKey.focus ? "white" : "black"
+                            color: "black"
+                        }
+
+                        Text {
+                            anchors.bottom: parent.bottom
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.bottomMargin: 1
+
+                            text: index
+                            font.pixelSize: 10
+                            color: "#666"
                         }
                     }
                 }
@@ -95,6 +101,15 @@ Item {
                 y: 5
 
                 text: qsTr("Graph representation")
+            }
+
+            Text {
+                color: "#555555"
+                anchors.right: parent.right
+                anchors.rightMargin: 5
+                y: 5
+
+                text: qsTr("Click on a node to edit its value")
             }
 
             Repeater {
@@ -134,8 +149,9 @@ Item {
                     TextInput {
                         id: nodeKey
                         anchors.centerIn: parent
-                        color: "white"
                         padding: 15
+                        focus: editorModel.currentlySelectedNodeIndex === index
+                        color: "white"
 
                         text: editorModel.tree[index]
                         font.pixelSize: 16
@@ -146,9 +162,23 @@ Item {
                         }
 
                         onTextChanged: {
-                            if (array.itemAt(index)?.elementKey.text && array.itemAt(index).elementKey.text !== nodeKey.text) {
-                                array.itemAt(index).elementKey.text = Number(nodeKey.text)
-                                globals.currentlyEditedTree[index] = Number(nodeKey.text)
+                            if (text.startsWith("0"))
+                                text = text.replace(/^0+(?!$)/, '')
+
+                            if (text.length === 0)
+                                text = "0"
+
+                            if (array.itemAt(index))
+                                array.itemAt(index).elementKey.text = text
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.IBeamCursor
+
+                            onClicked: {
+                                parent.forceActiveFocus()
+                                parent.cursorPosition = parent.text.length
                             }
                         }
                     }
@@ -174,7 +204,7 @@ Item {
                     text: qsTr("Add Node")
 
                     onClicked: {
-                        globals.addNode(1)
+                        syncTree()
                         editorModel.addNode()
                     }
                 }
@@ -186,8 +216,12 @@ Item {
                     text: qsTr("Remove Node")
 
                     onClicked: {
-                        globals.removeLastNode()
+                        syncTree()
                         editorModel.removeNode()
+
+                        for (let i = 0; i < maxSize; i++) {
+                            array.itemAt(i).elementKey.text = editorModel.tree[i] ?? ""
+                        }
                     }
                 }
             }
@@ -203,6 +237,7 @@ Item {
                     text: qsTr("Save")
 
                     onClicked: {
+                        syncTree()
                         saveVisualizationPopup.open()
                     }
                 }
@@ -214,6 +249,7 @@ Item {
                     text: qsTr("Visualize ->")
 
                     onClicked: {
+                        syncTree()
                         algorithmSelector.open()
                     }
                 }
@@ -491,5 +527,19 @@ Item {
                 heapifyPopup.close()
             }
         }
+    }
+
+    function syncTree() {
+        const temp = []
+
+        for (let i = 0; i < editorModel.tree.length; i++) {
+            temp.push(Number(nodes.itemAt(i).nodeKey.text))
+        }
+
+        for (let j = 0; j < temp.length; j++) {
+            editorModel.setNodeKey(j, temp[j])
+        }
+
+        globals.currentlyEditedTree = temp
     }
 }

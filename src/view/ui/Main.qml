@@ -30,7 +30,7 @@ Window {
                     id: homeButton
                     width: 60
                     text: qsTr("Home")
-                    enabled: true
+                    enabled: false
 
                     onClicked: {
                         onPageSwitched("Home")

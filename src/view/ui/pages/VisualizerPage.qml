@@ -131,22 +131,36 @@ Item {
 
             Row {
                 anchors.bottom: arrayContainer.bottom
+                anchors.bottomMargin: 10
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: 7
 
                 Repeater {
                     id: array
                     model: maxSize
 
                     delegate: Rectangle {
-                        width: arrayContainer.width / maxSize
-                        height: arrayContainer.width / maxSize
+                        width: 50
+                        height: width
                         y: 5
-                        color: index % 2 === 0 ? "#bebebe" : "#cccccc"
+                        radius: 5
+                        color: "#bbb"
 
                         Text {
                             anchors.centerIn: parent
 
                             text: visualizerModel.tree[index] ?? ""
                             font.pixelSize: 18
+                        }
+
+                        Text {
+                            anchors.bottom: parent.bottom
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.bottomMargin: 1
+
+                            text: index
+                            font.pixelSize: 10
+                            color: "#666"
                         }
                     }
                 }
