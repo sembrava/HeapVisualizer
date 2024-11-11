@@ -3,6 +3,7 @@ import QtQuick.Shapes 1.15
 import "../general"
 import "../logic/PositionCalculator.js" as PositionCalculator
 import "../logic/Animations.js" as Animations
+import "../logic/Colors.js" as Colors
 
 Item {
     property var visualizerModel: modelManager.createVisualizerPageModel(globals.currentlyEditedTree, globals.currentAlgorithm, globals.documentHeapification, globals.newNodeKey)
@@ -17,12 +18,18 @@ Item {
         function onNodesSwapped(greaterNodeIndex, smallerNodeIndex) {
             for (let i = 0; i < nodes.count; i++) {
                 if (Qt.colorEqual(nodes.itemAt(i).color, "#f07b32")) {
-                    nodes.itemAt(i).color = "#888888"
+                    nodes.itemAt(i).color = Colors.getElementColor("light", i)
+                }
+
+                if (Qt.colorEqual(array.itemAt(i).color, "#f07b32")) {
+                    array.itemAt(i).color = Colors.getElementColor("light", i)
                 }
             }
 
             nodes.itemAt(greaterNodeIndex).color = "#f07b32"
             nodes.itemAt(smallerNodeIndex).color = "#f07b32"
+            array.itemAt(greaterNodeIndex).color = "#f07b32"
+            array.itemAt(smallerNodeIndex).color = "#f07b32"
 
             Animations.swapNodes(nodes, greaterNodeIndex, smallerNodeIndex)
         }
@@ -30,12 +37,19 @@ Item {
         function onNodesHighlighted(greaterNodeIndex, smallerNodeIndex) {
             for (let i = 0; i < nodes.count; i++) {
                 if (Qt.colorEqual(nodes.itemAt(i).color, "#f07b32")) {
-                    nodes.itemAt(i).color = "#888888"
+                    nodes.itemAt(i).color = Colors.getElementColor("light", i)
+                }
+
+                if (Qt.colorEqual(array.itemAt(i).color, "#f07b32")) {
+                    array.itemAt(i).color = Colors.getElementColor("light", i)
                 }
             }
 
             nodes.itemAt(greaterNodeIndex).color = "#f07b32"
             nodes.itemAt(smallerNodeIndex).color = "#f07b32"
+            array.itemAt(greaterNodeIndex).color = "#f07b32"
+            array.itemAt(smallerNodeIndex).color = "#f07b32"
+
             nodes.itemAt(greaterNodeIndex).selectAnimation.start()
             nodes.itemAt(smallerNodeIndex).selectAnimation.start()
         }
@@ -43,21 +57,29 @@ Item {
         function onSortedBoundHighlighted(sortedBoundIndex) {
             for (let i = 0; i < nodes.count; i++) {
                 if (Qt.colorEqual(nodes.itemAt(i).color, "#f07b32")) {
-                    nodes.itemAt(i).color = "#888888"
+                    nodes.itemAt(i).color = Colors.getElementColor("light", i)
+                }
+
+                if (Qt.colorEqual(array.itemAt(i).color, "#f07b32")) {
+                    array.itemAt(i).color = Colors.getElementColor("light", i)
                 }
             }
 
             nodes.itemAt(sortedBoundIndex).color = "#22bd5d"
+            array.itemAt(sortedBoundIndex).color = "#22bd5d"
+
             nodes.itemAt(sortedBoundIndex).selectAnimation.start()
         }
 
         function onSortedBoundReverted(sortedBoundIndex) {
-            nodes.itemAt(sortedBoundIndex).color = "#888888";
+            nodes.itemAt(sortedBoundIndex).color = Colors.getElementColor("light", sortedBoundIndex)
+            array.itemAt(sortedBoundIndex).color = Colors.getElementColor("light", sortedBoundIndex)
         }
 
         function onVisualizationReset() {
             for (let i = 0; i < nodes.count; i++) {
-                nodes.itemAt(i).color = "#888888"
+                nodes.itemAt(i).color = Colors.getElementColor("light", i)
+                array.itemAt(i).color = Colors.getElementColor("light", i)
             }
 
             extractedNode.visible = false
@@ -69,13 +91,15 @@ Item {
 
         function onVisualizationFinished() {
             for (let i = 0; i < nodes.count; i++) {
-                nodes.itemAt(i).color = "#888888"
+                nodes.itemAt(i).color = Colors.getElementColor("light", i)
+                array.itemAt(i).color = Colors.getElementColor("light", i)
             }
         }
 
         function onNodeExtracted(nodeKey) {
             for (let i = 0; i < nodes.count; i++) {
-                nodes.itemAt(i).color = "#888888"
+                nodes.itemAt(i).color = Colors.getElementColor("light", i)
+                array.itemAt(i).color = Colors.getElementColor("light", i)
             }
 
             extractedNode.visible = false
@@ -89,14 +113,24 @@ Item {
 
         function onRootKeyChanged() {
             nodes.itemAt(0).color = "#f07b32"
+            array.itemAt(0).color = "#f07b32"
+
             nodes.itemAt(0).selectAnimation.start()
 
             nodes.itemAt(visualizerModel.tree.length - 1).color = "#e33d3d"
+            array.itemAt(visualizerModel.tree.length - 1).color = "#e33d3d"
+
             nodes.itemAt(visualizerModel.tree.length - 1).selectAnimation.start()
+        }
+
+        function onNodeRemoved() {
+            array.itemAt(visualizerModel.tree.length).color = Colors.getElementColor("light", visualizerModel.tree.length)
         }
 
         function onNodeAdded() {
             nodes.itemAt(visualizerModel.tree.length - 1).color = "#f07b32"
+            array.itemAt(visualizerModel.tree.length - 1).color = "#e33d3d"
+
             nodes.itemAt(visualizerModel.tree.length - 1).selectAnimation.start()
         }
 
@@ -144,7 +178,9 @@ Item {
                         height: width
                         y: 5
                         radius: 5
-                        color: "#bbb"
+                        color: Colors.getElementColor("light", index)
+                        border.color: "#bbb"
+                        border.width: 1
 
                         Text {
                             anchors.centerIn: parent
@@ -160,7 +196,7 @@ Item {
 
                             text: index
                             font.pixelSize: 10
-                            color: "#666"
+                            color: "#222"
                         }
                     }
                 }
@@ -230,11 +266,13 @@ Item {
                     radius: nodeSize / 2
                     x: PositionCalculator.calculateNodeXOffset(index, parent.width, nodeSize)
                     y: PositionCalculator.calculateNodeYOffset(index, 100, 50, nodeSize)
-                    color: index >= visualizerModel.sortedBoundIndex ? "#22bd5d" : "#888888"
+                    color: index >= visualizerModel.sortedBoundIndex ? "#22bd5d" : Colors.getElementColor("light", index)
+                    border.color: "#bbb"
+                    border.width: 1
 
                     Text {
                         anchors.centerIn: parent
-                        color: "white"
+                        color: "black"
 
                         text: visualizerModel.tree[index]
                         font.pixelSize: 16

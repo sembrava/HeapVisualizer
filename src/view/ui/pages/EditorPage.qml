@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 import "../general"
 import "../logic/PositionCalculator.js" as PositionCalculator
 import "../logic/Utils.js" as Utils
+import "../logic/Colors.js" as Colors
 
 Item {
     property var editorModel: modelManager.createEditorPageModel(globals.currentlyEditedTree)
@@ -24,8 +25,11 @@ Item {
             anchors.fill: parent
 
             onClicked: {
-                for (let i = 0; i < nodes.count; i++) {
-                    nodes.itemAt(i).nodeKey.focus = false
+                for (let i = 0; i < maxSize; i++) {
+                    if (nodes.itemAt(i))
+                        nodes.itemAt(i).nodeKey.focus = false
+
+                    array.itemAt(i).color = Colors.getElementColor("light", i)
                 }
             }
         }
@@ -63,7 +67,9 @@ Item {
                         height: width
                         y: 5
                         radius: 5
-                        color: "#bbb"
+                        color: nodes.itemAt(index)?.nodeKey.focus ? "#f07b32" : Colors.getElementColor("light", index)
+                        border.color: "#bbb"
+                        border.width: 1
 
                         Text {
                             id: elementKey
@@ -81,7 +87,7 @@ Item {
 
                             text: index
                             font.pixelSize: 10
-                            color: "#666"
+                            color: "#222"
                         }
                     }
                 }
@@ -109,7 +115,7 @@ Item {
                 anchors.rightMargin: 5
                 y: 5
 
-                text: qsTr("Click on a node to edit its value")
+                text: qsTr("💡Click on a node to edit its value")
             }
 
             Repeater {
@@ -144,14 +150,16 @@ Item {
                     radius: nodeSize / 2
                     x: PositionCalculator.calculateNodeXOffset(index, parent.width, nodeSize)
                     y: PositionCalculator.calculateNodeYOffset(index, 100, 50)
-                    color: nodeKey.focus ? "#f07b32" : "#888"
+                    color: nodeKey.focus ? "#f07b32" : Colors.getElementColor("light", index)
+                    border.color: "#bbb"
+                    border.width: 1
 
                     TextInput {
                         id: nodeKey
                         anchors.centerIn: parent
                         padding: 15
                         focus: editorModel.currentlySelectedNodeIndex === index
-                        color: "white"
+                        color: "black"
 
                         text: editorModel.tree[index]
                         font.pixelSize: 16
@@ -170,6 +178,16 @@ Item {
 
                             if (array.itemAt(index))
                                 array.itemAt(index).elementKey.text = text
+                        }
+
+                        onFocusChanged: {
+                            if (focus) {
+                                for (let i = 0; i < maxSize; i++)
+                                    array.itemAt(i).color = Colors.getElementColor("light", i)
+
+                                array.itemAt(index).color = "#f07b32"
+
+                            }
                         }
 
                         MouseArea {
@@ -541,5 +559,12 @@ Item {
         }
 
         globals.currentlyEditedTree = temp
+
+        for (let k = 0; k < maxSize; k++) {
+            if (nodes.itemAt(k))
+                nodes.itemAt(k).nodeKey.focus = false
+
+            array.itemAt(k).color = Colors.getElementColor("light", k)
+        }
     }
 }

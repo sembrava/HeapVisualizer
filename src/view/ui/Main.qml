@@ -11,7 +11,7 @@ Window {
     maximumHeight: height
     minimumHeight: height
     visible: true
-    title: "HeapVisualizer"
+    title: (globals.currentFileName.length > 0 ? globals.currentFileName + " - " : "") + "HeapVisualizer"
 
     Row {
         anchors.fill: parent
@@ -78,6 +78,7 @@ Window {
     function onPageSwitched(pageName, tree) {
         switch (pageName) {
             case "Home":
+                globals.currentFileName = ""
                 pageLoader.source = "qrc:/HeapVisualizer/src/view/ui/pages/HomePage.qml"
 
                 homeButton.enabled = false

@@ -35,58 +35,63 @@ Item {
             color: "#cccccc"
         }
 
-        Grid {
-            id: savedVisualizationsContainer
-            columns: 4
-            spacing: 10
+        ScrollView {
+            width: parent.width
+            height: parent.height
 
-            Repeater {
-                id: savedVisualizationsRepeater
-                model: homeModel.savedVisualizations
+            Grid {
+                id: savedVisualizationsContainer
+                columns: 4
+                spacing: 10
 
-                delegate: Rectangle {
-                    color: "#cccccc"
-                    width: 200
-                    height: 100
-                    radius: 5
-                    clip: true
+                Repeater {
+                    id: savedVisualizationsRepeater
+                    model: homeModel.savedVisualizations
 
-                    Rectangle {
-                        width: parent.width
-                        height: 20
-                        color: "#bbbbbb"
+                    delegate: Rectangle {
+                        color: "#cccccc"
+                        width: 209
+                        height: 100
                         radius: 5
+                        clip: true
 
-                        Text {
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: 5
-                            color: "white"
-                            text: modelData.name
+                        Rectangle {
+                            width: parent.width
+                            height: 20
+                            color: "#bbbbbb"
+                            radius: 5
+
+                            Text {
+                                anchors.verticalCenter: parent.verticalCenter
+                                x: 5
+                                color: "white"
+                                text: modelData.name
+                            }
                         }
-                    }
 
-                    HoverButton {
-                        id: deleteButton
-                        anchors.left: parent.left
-                        anchors.bottom: parent.bottom
-                        text: "x"
+                        HoverButton {
+                            id: deleteButton
+                            anchors.left: parent.left
+                            anchors.bottom: parent.bottom
+                            text: "x"
 
-                        onClicked: {
-                            homeModel.deleteVisualization(index)
+                            onClicked: {
+                                homeModel.deleteVisualization(index)
+                            }
                         }
-                    }
 
-                    HoverButton {
-                        id: openButton
-                        anchors.right: parent.right
-                        anchors.bottom: parent.bottom
-                        text: qsTr("Open")
+                        HoverButton {
+                            id: openButton
+                            anchors.right: parent.right
+                            anchors.bottom: parent.bottom
+                            text: qsTr("Open")
 
-                        onClicked: {
-                            globals.currentFileName = modelData.name
-                            globals.currentlyEditedTree = modelData.tree
+                            onClicked: {
+                                globals.currentFileName = modelData.name
+                                globals.currentlyEditedTree = modelData.tree
 
-                            switchPage("Editor")
+                                switchPage("Editor")
+                            }
                         }
                     }
                 }
@@ -217,7 +222,7 @@ Item {
             anchors.bottom: parent.bottom
 
             onClicked: {
-                if (!Utils.isValidArrayLiteral(customArray.text)) {
+                if (fromArrayRadioButton.checked && !Utils.isValidArrayLiteral(customArray.text)) {
                     customArrayError.visible = true
                     return;
                 }
