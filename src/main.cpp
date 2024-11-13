@@ -1,14 +1,17 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QQuickStyle>
 
 #include "src/view/models/completebinarytree.h"
 #include "view/modelmanager.h"
-#include "view/ui/qmlglobals.h"
+#include "globals.h"
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+
+    QQuickStyle::setStyle("Fusion");
 
     QQmlApplicationEngine engine;
 
@@ -20,8 +23,7 @@ int main(int argc, char *argv[])
     CompleteBinaryTree currentlyEditedTree("", QVariantList());
     engine.rootContext()->setContextProperty("currentlyEditedTree", &currentlyEditedTree);
 
-    QmlGlobals globals;
-    engine.rootContext()->setContextProperty("globals", &globals);
+    engine.rootContext()->setContextProperty("globals", &g_qmlGlobals);
 
     const QUrl url(QStringLiteral("qrc:/HeapVisualizer/src/view/ui/Main.qml"));
 

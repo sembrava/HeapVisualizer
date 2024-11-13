@@ -15,7 +15,7 @@ void AddNodeVisualizer::stepForward()
 
     if (m_currentSnapshotIndex == m_snapshots.size())
     {
-        emit explanationChanged(ADD_NODE_FINISHED_EXPLANATION);
+        emit explanationChanged(addNodeFinishedExplanation());
 
         emit visualizationFinished();
 
@@ -29,7 +29,7 @@ void AddNodeVisualizer::stepForward()
     {
         emit nodeAdded(currentTree);
 
-        emit explanationChanged(NODE_ADDED_EXPLANATION(currentTree[currentTree.size() - 1]));
+        emit explanationChanged(nodeAddedExplanation(currentTree[currentTree.size() - 1]));
     }
 
     else
@@ -45,7 +45,7 @@ void AddNodeVisualizer::stepForward()
             );
 
             emit explanationChanged(
-                COMPARED_NODE_INDEXES_CHANGED_EXPLANATION(
+                comparedNodeIndexesChangedExplanation(
                     currentTree[currentSnapshot.getGreaterComparedNodeIndex().value()], currentTree[currentSnapshot.getSmallerComparedNodeIndex().value()]
                 )
             );
@@ -62,7 +62,7 @@ void AddNodeVisualizer::stepForward()
                 );
 
                 emit explanationChanged(
-                    COMPARED_NODE_INDEXES_CHANGED_EXPLANATION(
+                    comparedNodeIndexesChangedExplanation(
                         currentTree[currentSnapshot.getGreaterComparedNodeIndex().value()], currentTree[currentSnapshot.getSmallerComparedNodeIndex().value()]
                     )
                 );
@@ -78,7 +78,7 @@ void AddNodeVisualizer::stepForward()
                     );
 
                     emit explanationChanged(
-                        COMPARED_NODES_SWAPPED_EXPLANATION(
+                        comparedNodesSwappedExplanation(
                             currentTree[currentSnapshot.getGreaterComparedNodeIndex().value()], currentTree[currentSnapshot.getSmallerComparedNodeIndex().value()]
                         )
                     );

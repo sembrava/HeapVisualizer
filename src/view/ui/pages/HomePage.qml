@@ -8,6 +8,18 @@ Item {
 
     signal switchPage(string pageName)
 
+    HoverButton {
+        width: 100
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        y: 10
+        text: globals.language === "hu" ? "Beállítások" : "Settings"
+
+        onClicked: {
+            switchPage("Settings")
+        }
+    }
+
     Column {
         id: homePageContainer
         anchors.fill: parent
@@ -17,11 +29,7 @@ Item {
         HoverButton {
             id: createVisualizationButton
             width: 200
-
-            Text {
-                anchors.centerIn: parent
-                text: qsTr("Create visualization")
-            }
+            text: globals.language === "hu" ? "Új szemléltetés" : "Create visualization"
 
             onClicked: {
                 newVisualizationPopup.open()
@@ -84,7 +92,7 @@ Item {
                             id: openButton
                             anchors.right: parent.right
                             anchors.bottom: parent.bottom
-                            text: qsTr("Open")
+                            text: globals.language === "hu" ? "Megnyitás" : "Open"
 
                             onClicked: {
                                 globals.currentFileName = modelData.name
@@ -119,7 +127,7 @@ Item {
 
         Text {
             id: newVisualizationTitle
-            text: qsTr("Create visualization")
+            text: globals.language === "hu" ? "Új szemléltetés" : "Create visualization"
         }
 
         HoverButton {
@@ -138,13 +146,13 @@ Item {
 
             RadioButton {
                 id: openEditorRadioButton
-                text: qsTr("Open editor")
+                text: globals.language === "hu" ? "Szerkesztő megnyitása" : "Open editor"
                 checked: true
             }
 
             RadioButton {
                 id: generateRandomRadioButton
-                text: qsTr("Generate randomly")
+                text: globals.language === "hu" ? "Véletlenszerű tömb generálása" : "Generate randomly"
             }
 
             Row {
@@ -152,7 +160,7 @@ Item {
                 spacing: 5
 
                 Text {
-                    text: qsTr("Array size")
+                    text: globals.language === "hu" ? "Tömb mérete" : "Array size"
                     color: generateRandomRadioButton.checked ? "#000" : "#ccc"
                 }
 
@@ -180,7 +188,7 @@ Item {
 
             RadioButton {
                 id: fromArrayRadioButton
-                text: qsTr("Create from array")
+                text: globals.language === "hu" ? "Generálás tömb megadásával" : "Create from array"
 
                 onCheckedChanged: {
                     if (!checked)
@@ -207,7 +215,7 @@ Item {
 
                 Text {
                     id: customArrayError
-                    text: qsTr("Input must be at most 15 comma separated numbers from -999 to 999")
+                    text: globals.language === "hu" ? "A bemenet egy maximum 15 hosszú, -999 és 999 közötti értékekből \nálló, vesszővel elválasztott lista legyen" : "Input must be at most 15 comma separated numbers from -999 to 999"
                     font.pixelSize: 10
                     color: "red"
                     y: 20
@@ -217,7 +225,7 @@ Item {
         }
 
         HoverButton {
-            text: qsTr("Create")
+            text: globals.language === "hu" ? "Létrehozás" : "Create"
             anchors.right: parent.right
             anchors.bottom: parent.bottom
 

@@ -29,7 +29,7 @@ Window {
                 HoverButton {
                     id: homeButton
                     width: 60
-                    text: qsTr("Home")
+                    text: globals.language === "hu" ? "Főoldal" : "Home"
                     enabled: false
 
                     onClicked: {
@@ -40,7 +40,7 @@ Window {
                 HoverButton {
                     id: editorButton
                     width: 60
-                    text: qsTr("Editor")
+                    text: globals.language === "hu" ? "Szerkesztő" : "Editor"
                     enabled: false
 
                     onClicked: {
@@ -51,7 +51,7 @@ Window {
                 HoverButton {
                     id: visualizerButton
                     width: 60
-                    text: qsTr("Visualizer")
+                    text: globals.language === "hu" ? "Szemléltetés" : "Visualizer"
                     enabled: false
 
                     onClicked: {
@@ -104,6 +104,15 @@ Window {
                 visualizerButton.enabled = false
 
                 break
+
+            case "Settings":
+                pageLoader.source = "qrc:/HeapVisualizer/src/view/ui/pages/SettingsPage.qml"
+
+                homeButton.enabled = true
+                editorButton.enabled = false
+                visualizerButton.enabled = false
+
+                break;
 
             default:
                 console.log("Something went wrong")

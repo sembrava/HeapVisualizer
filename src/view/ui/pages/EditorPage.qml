@@ -47,7 +47,7 @@ Item {
                 x: 5
                 y: 5
 
-                text: qsTr("Array representation")
+                text: globals.language === "hu" ? "Tömbös nézet" : "Array representation"
             }
 
             Row {
@@ -106,7 +106,7 @@ Item {
                 x: 5
                 y: 5
 
-                text: qsTr("Graph representation")
+                text: globals.language === "hu" ? "Gráfos nézet" : "Graph representation"
             }
 
             Text {
@@ -115,7 +115,7 @@ Item {
                 anchors.rightMargin: 5
                 y: 5
 
-                text: qsTr("💡Click on a node to edit its value")
+                text: globals.language === "hu" ? "💡Kattints egy cúcsra az értéke módosításához" : "💡Click on a node to edit its value"
             }
 
             Repeater {
@@ -219,7 +219,7 @@ Item {
                     width: 150
                     height: 35
                     enabled: editorModel.tree.length < maxSize
-                    text: qsTr("Add Node")
+                    text: globals.language === "hu" ? "Csúcs hozzáadása" : "Add node"
 
                     onClicked: {
                         syncTree()
@@ -231,7 +231,7 @@ Item {
                     width: 150
                     height: 35
                     enabled: editorModel.tree.length > 0
-                    text: qsTr("Remove Node")
+                    text: globals.language === "hu" ? "Csúcs eltávolítása" : "Remove node"
 
                     onClicked: {
                         syncTree()
@@ -252,7 +252,7 @@ Item {
                     width: 150
                     height: 35
                     enabled: editorModel.tree.length > 0
-                    text: qsTr("Save")
+                    text: globals.language === "hu" ? "Mentés" : "Save"
 
                     onClicked: {
                         syncTree()
@@ -264,7 +264,7 @@ Item {
                     width: 150
                     height: 35
                     enabled: editorModel.tree.length > 0
-                    text: qsTr("Visualize ->")
+                    text: globals.language === "hu" ? "Szemléltetés" : "Visualize"
 
                     onClicked: {
                         syncTree()
@@ -291,7 +291,7 @@ Item {
 
         Text {
             id: popupTitle
-            text: qsTr("Choose algorithm")
+            text: globals.language === "hu" ? "Algoritmus kiválasztása" : "Choose algorithm"
         }
 
         HoverButton {
@@ -310,18 +310,18 @@ Item {
 
             RadioButton {
                 id: heapSortRadioButton
-                text: qsTr("Heap sort")
+                text: globals.language === "hu" ? "Kupacrendezés" : "Heap sort"
                 checked: true
             }
 
             RadioButton {
                 id: removeMaxRadioButton
-                text: qsTr("Remove max")
+                text: globals.language === "hu" ? "Maximum kiválasztás" : "Remove max"
             }
 
             RadioButton {
                 id: insertNodeRadioButton
-                text: qsTr("Insert node")
+                text: globals.language === "hu" ? "Csúcs beszúrása" : "Insert node"
                 enabled: editorModel.tree.length < 15
             }
 
@@ -330,7 +330,7 @@ Item {
                 spacing: 10
 
                 Text {
-                    text: qsTr("Key")
+                    text: globals.language === "hu" ? "Kulcs" : "Key"
                     color: insertNodeRadioButton.checked ? "#000" : "#ccc"
                 }
 
@@ -359,7 +359,7 @@ Item {
 
         HoverButton {
             id: startButton
-            text: qsTr("Start")
+            text: globals.language === "hu" ? "Start" : "Start"
             anchors.right: parent.right
             anchors.bottom: parent.bottom
 
@@ -398,7 +398,7 @@ Item {
 
         CheckBox {
             id: skipHeapificationCheckbox
-            text: qsTr("Skip heapification")
+            text: globals.language === "hu" ? "Kupaccá alakítás átugrása" : "Skip heapification"
             anchors.right: startButton.left
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 4
@@ -426,7 +426,7 @@ Item {
 
         Text {
             id: saveVisualizationTitle
-            text: qsTr("Save visualization")
+            text: globals.language === "hu" ? "Fa mentése" : "Save tree"
         }
 
         HoverButton {
@@ -444,7 +444,7 @@ Item {
             spacing: 5
 
             Text {
-                text: qsTr("Save as")
+                text: globals.language === "hu" ? "Fájlnév" : "Save as"
             }
 
             Rectangle {
@@ -470,7 +470,7 @@ Item {
         }
 
         HoverButton {
-            text: qsTr("Save")
+            text: globals.language === "hu" ? "Mentés" : "Save"
             anchors.right: parent.right
             anchors.bottom: parent.bottom
 
@@ -498,7 +498,7 @@ Item {
 
         Text {
             id: heapifyTitle
-            text: qsTr("Alert")
+            text: globals.language === "hu" ? "Figyelmeztetés" : "Alert"
         }
 
         HoverButton {
@@ -518,13 +518,13 @@ Item {
             Text {
                 width: parent.width
                 wrapMode: Text.WordWrap
-                text: qsTr("The provided array does not satisfy the heap property.\nWould you like to run the algorithm on a heapified version of the array?")
+                text: globals.language === "hu" ? "A megadott fa nem teljesíti a kupac tulajdonságot.\nSzeretnéd a fa kupaccá alakított verziójával lejátszani az algoritmust?" : "The provided tree does not satisfy the heap property.\nWould you like to run the algorithm on a heapified version of the tree?"
             }
         }
 
         HoverButton {
             id: yesButton
-            text: qsTr("Yes")
+            text: globals.language === "hu" ? "Igen" : "Yes"
             anchors.right: parent.right
             anchors.bottom: parent.bottom
 
@@ -537,7 +537,7 @@ Item {
 
         HoverButton {
             id: noButton
-            text: qsTr("No")
+            text: globals.language === "hu" ? "Nem" : "No"
             anchors.right: yesButton.left
             anchors.bottom: parent.bottom
 

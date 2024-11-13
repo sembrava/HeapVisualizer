@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QVariant>
+#include <QLocale>
+#include <QSettings>
 
 class QmlGlobals : public QObject
 {
@@ -13,6 +15,8 @@ class QmlGlobals : public QObject
     Q_PROPERTY(QString currentAlgorithm READ getCurrentAlgorithm WRITE setCurrentAlgorithm NOTIFY currentAlgorithmChanged);
     Q_PROPERTY(bool documentHeapification READ getDocumentHeapification WRITE setDocumentHeapification NOTIFY documentHeapificationChanged);
     Q_PROPERTY(int newNodeKey READ getNewNodeKey WRITE setNewNodeKey NOTIFY newNodeKeyChanged);
+    Q_PROPERTY(QString language READ getLanguage WRITE setLanguage NOTIFY languageChanged);
+    Q_PROPERTY(bool isLightTheme READ getIsLightTheme WRITE setIsLightTheme NOTIFY isLightThemeChanged);
 
 public:
     explicit QmlGlobals(QObject *parent = nullptr)
@@ -21,6 +25,8 @@ public:
         , m_currentAlgorithm("")
         , m_documentHeapification(true)
         , m_newNodeKey(0)
+        , m_language(QLocale::system().name() == "hu_HU" ? "hu" : "en")
+        , m_isLightTheme(QSettings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", QSettings::NativeFormat).value("AppsUseLightTheme", 1).toInt() != 0)
         , QObject(parent)
     {}
 
@@ -33,6 +39,10 @@ public:
     bool getDocumentHeapification() const { return m_documentHeapification; }
 
     int getNewNodeKey() const { return m_newNodeKey; }
+
+    QString getLanguage() const { return m_language; }
+
+    bool getIsLightTheme() const { return m_isLightTheme; }
 
     void setCurrentFileName(const QString& newName)
     {
@@ -64,6 +74,18 @@ public:
         emit newNodeKeyChanged();
     }
 
+    void setLanguage(const QString& newLanguage)
+    {
+        m_language = newLanguage;
+        emit languageChanged();
+    }
+
+    void setIsLightTheme(bool newValue)
+    {
+        m_isLightTheme = newValue;
+        emit isLightThemeChanged();
+    }
+
     Q_INVOKABLE void addNode(int key)
     {
         m_currentlyEditedTree.append(key);
@@ -88,12 +110,18 @@ signals:
 
     void newNodeKeyChanged();
 
+    void languageChanged();
+
+    void isLightThemeChanged();
+
 private:
     QString m_currentFileName;
     QVariantList m_currentlyEditedTree;
     QString m_currentAlgorithm;
     bool m_documentHeapification;
     int m_newNodeKey;
+    QString m_language;
+    bool m_isLightTheme;
 };
 
 #endif // QMLGLOBALS_H

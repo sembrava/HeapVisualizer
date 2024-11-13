@@ -5,14 +5,22 @@ function getElementColor(theme, index) {
 
     switch (level) {
         case 0:
-            return "#8899A6"; // Medium Slate Gray
+            return "#8899A6";
         case 1:
-            return "#A2B1BA"; // Soft Steel Gray
+            return "#A2B1BA";
         case 2:
-            return "#BCC5CC"; // Light Smoky Gray
+            return "#BCC5CC";
         case 3:
-            return "#D1D8DD"; // Light Cool Gray
+            return "#D1D8DD";
         default:
-            return "#E3E7EA"; // Soft Light Gray
+            return "#E3E7EA";
     }
+}
+
+function getButtonColor() {
+    return "#0949b0";
+}
+
+function getHoveredButtonColor () {
+    return "#05327a";
 }

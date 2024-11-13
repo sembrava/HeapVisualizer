@@ -4,7 +4,7 @@ project(HeapVisualizer VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.4 REQUIRED COMPONENTS Quick)
+find_package(Qt6 6.4 REQUIRED COMPONENTS Quick QuickControls2)
 
 qt_standard_project_setup()
 
@@ -58,6 +58,8 @@ qt_add_qml_module(appHeapVisualizer
         SOURCES
         SOURCES src/model/visualizers/addnodevisualizer.h src/model/visualizers/addnodevisualizer.cpp
         QML_FILES src/view/ui/logic/Colors.js
+        QML_FILES src/view/ui/pages/SettingsPage.qml
+        SOURCES src/globals.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -73,6 +75,10 @@ set_target_properties(appHeapVisualizer PROPERTIES
 
 target_link_libraries(appHeapVisualizer
     PRIVATE Qt6::Quick
+)
+
+target_link_libraries(appHeapVisualizer
+    PRIVATE Qt6::QuickControls2
 )
 
 include(GNUInstallDirs)

@@ -160,7 +160,7 @@ Item {
                 x: 5
                 y: 5
 
-                text: qsTr("Array representation")
+                text: globals.language === "hu" ? "Tömbös nézet" : "Array representation"
             }
 
             Row {
@@ -215,7 +215,7 @@ Item {
                 x: 5
                 y: 5
 
-                text: qsTr("Graph representation")
+                text: globals.language === "hu" ? "Gráfos nézet" : "Graph representation"
             }
 
             Repeater {
@@ -456,7 +456,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 width: 150
                 height: 35
-                text: qsTr("Back")
+                text: globals.language === "hu" ? "Vissza" : "Back"
 
                 onClicked: {
                     switchPage("Editor")
@@ -477,10 +477,6 @@ Item {
                         onClicked: {
                             visualizerModel.stepBackward()
                         }
-                    }
-
-                    HoverButton {
-                        text: "Auto"
                     }
 
                     HoverButton {

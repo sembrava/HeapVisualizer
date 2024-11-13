@@ -15,7 +15,7 @@ void HeapSortVisualizer::stepForward()
 
     if (m_currentSnapshotIndex == m_snapshots.size())
     {
-        emit explanationChanged(HEAP_SORT_FINISHED_EXPLANATION);
+        emit explanationChanged(heapSortFinishedExplanation());
 
         return;
     }
@@ -27,7 +27,7 @@ void HeapSortVisualizer::stepForward()
     {
         emit sortedBoundChanged(currentSnapshot.getSortedBoundIndex().value(), currentTree);
 
-        emit explanationChanged(SORTED_BOUND_INDEX_CHANGED_EXPLANATION(currentTree[currentSnapshot.getSortedBoundIndex().value()]));
+        emit explanationChanged(sortedBoundIndexChangedExplanation(currentTree[currentSnapshot.getSortedBoundIndex().value()]));
 
         // TODO: emit step forward disable or maybe expose current snapshot index to qml and disable dynamically
     }
@@ -39,7 +39,7 @@ void HeapSortVisualizer::stepForward()
         );
 
         emit explanationChanged(
-            COMPARED_NODE_INDEXES_CHANGED_EXPLANATION(
+            comparedNodeIndexesChangedExplanation(
                 currentTree[currentSnapshot.getGreaterComparedNodeIndex()], currentTree[currentSnapshot.getSmallerComparedNodeIndex()]
             )
         );
@@ -54,7 +54,7 @@ void HeapSortVisualizer::stepForward()
         {
             emit sortedBoundChanged(currentSnapshot.getSortedBoundIndex().value(), currentTree);
 
-            emit explanationChanged(SORTED_BOUND_INDEX_CHANGED_EXPLANATION(currentTree[currentSnapshot.getSortedBoundIndex().value()]));
+            emit explanationChanged(sortedBoundIndexChangedExplanation(currentTree[currentSnapshot.getSortedBoundIndex().value()]));
         }
 
         else if (m_snapshots[m_currentSnapshotIndex + 1].getSortedBoundIndex().has_value())
@@ -64,7 +64,7 @@ void HeapSortVisualizer::stepForward()
             );
 
             emit explanationChanged(
-                ROOT_AND_LAST_NODE_SWAPPED_EXPLANATION(
+                rootAndLastNodeSwappedExplanation(
                     currentTree[0], currentTree[m_snapshots[m_currentSnapshotIndex + 1].getSortedBoundIndex().value()]
                 )
             );
@@ -80,7 +80,7 @@ void HeapSortVisualizer::stepForward()
                 );
 
                 emit explanationChanged(
-                    COMPARED_NODE_INDEXES_CHANGED_EXPLANATION(
+                    comparedNodeIndexesChangedExplanation(
                         currentTree[currentSnapshot.getGreaterComparedNodeIndex()], currentTree[currentSnapshot.getSmallerComparedNodeIndex()]
                     )
                 );
@@ -96,7 +96,7 @@ void HeapSortVisualizer::stepForward()
                     );
 
                     emit explanationChanged(
-                        COMPARED_NODES_SWAPPED_EXPLANATION(
+                        comparedNodesSwappedExplanation(
                             currentTree[currentSnapshot.getGreaterComparedNodeIndex()], currentTree[currentSnapshot.getSmallerComparedNodeIndex()]
                         )
                     );

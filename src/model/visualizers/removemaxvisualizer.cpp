@@ -16,7 +16,7 @@ void RemoveMaxVisualizer::stepForward()
 
     if (m_currentSnapshotIndex == m_snapshots.size())
     {
-        emit explanationChanged(REMOVE_MAX_FINISHED_EXPLANATION);
+        emit explanationChanged(removeMaxFinishedExplanation());
 
         emit visualizationFinished();
 
@@ -30,14 +30,14 @@ void RemoveMaxVisualizer::stepForward()
     {
         emit nodeExtracted(m_snapshots[0].getExtractedNodeKey());
 
-        emit explanationChanged(NODE_EXTRACTED_EXPLANATION(m_snapshots[0].getExtractedNodeKey()));
+        emit explanationChanged(nodeExtractedExplanation(m_snapshots[0].getExtractedNodeKey()));
     }
 
     else if (m_currentSnapshotIndex == 1)
     {
         emit rootKeyChanged(currentTree);
 
-        emit explanationChanged(ROOT_KEY_CHANGED_EXPLANATION(m_snapshots[m_currentSnapshotIndex - 1].getTree()[0], currentTree[currentTree.size() - 1]));
+        emit explanationChanged(rootKeyChangedExplanation(m_snapshots[m_currentSnapshotIndex - 1].getTree()[0], currentTree[currentTree.size() - 1]));
     }
 
     else
@@ -49,7 +49,7 @@ void RemoveMaxVisualizer::stepForward()
         {
             emit nodeRemoved(currentTree);
 
-            emit explanationChanged(NODE_REMOVED_EXPLANATION(previousTree[previousTree.size() - 1]));
+            emit explanationChanged(nodeRemovedExplanation(previousTree[previousTree.size() - 1]));
         }
 
         else if (currentSnapshot.getGreaterComparedNodeIndex().has_value() && currentSnapshot.getSmallerComparedNodeIndex().has_value() &&
@@ -60,7 +60,7 @@ void RemoveMaxVisualizer::stepForward()
             );
 
             emit explanationChanged(
-                COMPARED_NODE_INDEXES_CHANGED_EXPLANATION(
+                comparedNodeIndexesChangedExplanation(
                     currentTree[currentSnapshot.getGreaterComparedNodeIndex().value()], currentTree[currentSnapshot.getSmallerComparedNodeIndex().value()]
                 )
             );
@@ -77,7 +77,7 @@ void RemoveMaxVisualizer::stepForward()
                 );
 
                 emit explanationChanged(
-                    COMPARED_NODE_INDEXES_CHANGED_EXPLANATION(
+                    comparedNodeIndexesChangedExplanation(
                         currentTree[currentSnapshot.getGreaterComparedNodeIndex().value()], currentTree[currentSnapshot.getSmallerComparedNodeIndex().value()]
                     )
                 );
@@ -93,7 +93,7 @@ void RemoveMaxVisualizer::stepForward()
                     );
 
                     emit explanationChanged(
-                        COMPARED_NODES_SWAPPED_EXPLANATION(
+                        comparedNodesSwappedExplanation(
                             currentTree[currentSnapshot.getGreaterComparedNodeIndex().value()], currentTree[currentSnapshot.getSmallerComparedNodeIndex().value()]
                         )
                     );
