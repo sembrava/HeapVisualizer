@@ -101,8 +101,6 @@ void AddNodeVisualizer::stepBackward()
 
         inputTree.pop_back();
 
-        qDebug() << inputTree.size();
-
         emit visualizationReset(inputTree);
         emit explanationChanged("");
 

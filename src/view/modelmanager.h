@@ -19,6 +19,8 @@ public:
 
     Q_INVOKABLE QObject* createVisualizerPageModel(QVariantList tree, const QString& algorithmName, const bool documentHeapification, const int newNodeKey);
 
+    Q_INVOKABLE QObject* createSettingsPageModel();
+
 private:
     QObject* configureModel(QObject* object);
 };

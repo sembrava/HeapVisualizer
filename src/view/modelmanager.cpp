@@ -10,6 +10,7 @@
 #include "models/homemodel.h"
 #include "models/editormodel.h"
 #include "models/visualizermodel.h"
+#include "models/settingsmodel.h"
 #include "../globals.h"
 
 ModelManager::ModelManager(QObject *parent)
@@ -54,6 +55,11 @@ QObject* ModelManager::createVisualizerPageModel(QVariantList tree, const QStrin
         visualizer = new AddNodeVisualizer(vectorTree, newNodeKey);
 
     return configureModel(new VisualizerModel(tree, g_fileManager, visualizer));
+}
+
+QObject *ModelManager::createSettingsPageModel()
+{
+    return configureModel(new SettingsModel(g_settingsManager));
 }
 
 QObject* ModelManager::configureModel(QObject* object)

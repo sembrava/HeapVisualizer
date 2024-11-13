@@ -2,6 +2,8 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Item {
+    property var settingsModel: modelManager.createSettingsPageModel()
+
     signal switchPage(string pageName)
 
     Column {
@@ -13,23 +15,25 @@ Item {
             text: globals.language === "hu" ? "Nyelv" : "Language"
         }
 
-        RadioButton {
-            text: "English"
-            checked: globals.language === "en"
+        Column {
+            RadioButton {
+                text: "English"
+                checked: globals.language === "en"
 
-            onCheckedChanged: {
-                if (checked && globals.language !== "en")
-                    globals.language = "en"
+                onCheckedChanged: {
+                    if (checked && globals.language !== "en")
+                        settingsModel.setLanguage("en");
+                }
             }
-        }
 
-        RadioButton {
-            text: "Magyar"
-            checked: globals.language === "hu"
+            RadioButton {
+                text: "Magyar"
+                checked: globals.language === "hu"
 
-            onCheckedChanged: {
-                if (checked && globals.language !== "hu")
-                    globals.language = "hu"
+                onCheckedChanged: {
+                    if (checked && globals.language !== "hu")
+                        settingsModel.setLanguage("hu")
+                }
             }
         }
 
@@ -37,16 +41,26 @@ Item {
             text: globals.language === "hu" ? "Téma" : "Theme"
         }
 
-        RadioButton {
-            text: globals.language === "hu" ? "Rendszer" : "System"
-        }
+        Column {
+            RadioButton {
+                text: globals.language === "hu" ? "Világos" : "Light"
+                checked: globals.isLightTheme
 
-        RadioButton {
-            text: globals.language === "hu" ? "Világos" : "Light"
-        }
+                onCheckedChanged: {
+                    if (checked && globals.isLightTheme !== checked)
+                        settingsModel.setTheme("light")
+                }
+            }
 
-        RadioButton {
-            text: globals.language === "hu" ? "Sötét" : "Dark"
+            RadioButton {
+                text: globals.language === "hu" ? "Sötét" : "Dark"
+                checked: !globals.isLightTheme
+
+                onCheckedChanged: {
+                    if (checked && globals.isLightTheme === checked)
+                        settingsModel.setTheme("dark")
+                }
+            }
         }
     }
 }

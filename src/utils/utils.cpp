@@ -1,4 +1,6 @@
 #include <sstream>
+#include <QStandardPaths>
+#include <QDir>
 
 #include "utils.h"
 
@@ -29,4 +31,27 @@ QVariantList Utils::toQVariantList(const std::vector<int>& array)
         result.push_back(QVariant::fromValue(element));
 
     return result;
+}
+
+QString Utils::getAppDataPath()
+{
+    return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/HeapVisualizer";
+}
+
+std::string Utils::getSaveDirectoryPath()
+{
+    const QString path = Utils::getAppDataPath() + "/saves";
+
+    QDir().mkpath(path);
+
+    return path.toStdString();
+}
+
+std::string Utils::getSettingsPath()
+{
+    const QString path = Utils::getAppDataPath();
+
+    QDir().mkpath(path);
+
+    return path.toStdString();
 }

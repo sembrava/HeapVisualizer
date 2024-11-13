@@ -19,85 +19,39 @@ class QmlGlobals : public QObject
     Q_PROPERTY(bool isLightTheme READ getIsLightTheme WRITE setIsLightTheme NOTIFY isLightThemeChanged);
 
 public:
-    explicit QmlGlobals(QObject *parent = nullptr)
-        : m_currentFileName("")
-        , m_currentlyEditedTree(QVariantList())
-        , m_currentAlgorithm("")
-        , m_documentHeapification(true)
-        , m_newNodeKey(0)
-        , m_language(QLocale::system().name() == "hu_HU" ? "hu" : "en")
-        , m_isLightTheme(QSettings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", QSettings::NativeFormat).value("AppsUseLightTheme", 1).toInt() != 0)
-        , QObject(parent)
-    {}
+    explicit QmlGlobals(QObject *parent = nullptr);
 
-    QString getCurrentFileName() const { return m_currentFileName; }
+    QString getCurrentFileName() const;
 
-    QVariantList getCurrentlyEditedTree() const { return m_currentlyEditedTree; }
+    QVariantList getCurrentlyEditedTree() const;
 
-    QString getCurrentAlgorithm() const { return m_currentAlgorithm; }
+    QString getCurrentAlgorithm() const;
 
-    bool getDocumentHeapification() const { return m_documentHeapification; }
+    bool getDocumentHeapification() const;
 
-    int getNewNodeKey() const { return m_newNodeKey; }
+    int getNewNodeKey() const;
 
-    QString getLanguage() const { return m_language; }
+    QString getLanguage() const;
 
-    bool getIsLightTheme() const { return m_isLightTheme; }
+    bool getIsLightTheme() const;
 
-    void setCurrentFileName(const QString& newName)
-    {
-        m_currentFileName = newName;
-        emit currentFileNameChanged();
-    }
+    void setCurrentFileName(const QString& newName);
 
-    void setCurrentlyEditedTree(QVariantList newTree)
-    {
-        m_currentlyEditedTree = newTree;
-        emit currentlyEditedTreeChanged();
-    }
+    void setCurrentlyEditedTree(QVariantList newTree);
 
-    void setCurrentAlgorithm(const QString& newAlgorithm)
-    {
-        m_currentAlgorithm = newAlgorithm;
-        emit currentAlgorithmChanged();
-    }
+    void setCurrentAlgorithm(const QString& newAlgorithm);
 
-    void setDocumentHeapification(bool newValue)
-    {
-        m_documentHeapification = newValue;
-        emit documentHeapificationChanged();
-    }
+    void setDocumentHeapification(bool newValue);
 
-    void setNewNodeKey(int newKey)
-    {
-        m_newNodeKey = newKey;
-        emit newNodeKeyChanged();
-    }
+    void setNewNodeKey(int newKey);
 
-    void setLanguage(const QString& newLanguage)
-    {
-        m_language = newLanguage;
-        emit languageChanged();
-    }
+    void setLanguage(const QString& newLanguage);
 
-    void setIsLightTheme(bool newValue)
-    {
-        m_isLightTheme = newValue;
-        emit isLightThemeChanged();
-    }
+    void setIsLightTheme(bool newValue);
 
-    Q_INVOKABLE void addNode(int key)
-    {
-        m_currentlyEditedTree.append(key);
-    }
+    Q_INVOKABLE void addNode(int key);
 
-    Q_INVOKABLE void removeLastNode()
-    {
-        if (m_currentlyEditedTree.size() >= 0)
-        {
-            m_currentlyEditedTree.pop_back();
-        }
-    }
+    Q_INVOKABLE void removeLastNode();
 
 signals:
     void currentFileNameChanged();
