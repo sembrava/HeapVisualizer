@@ -26,7 +26,7 @@ Window {
                 anchors.centerIn: parent
                 spacing: 10
 
-                HoverButton {
+                StyledButton {
                     id: homeButton
                     width: 60
                     text: globals.language === "hu" ? "Főoldal" : "Home"
@@ -37,7 +37,7 @@ Window {
                     }
                 }
 
-                HoverButton {
+                StyledButton {
                     id: editorButton
                     width: 60
                     text: globals.language === "hu" ? "Szerkesztő" : "Editor"
@@ -48,7 +48,7 @@ Window {
                     }
                 }
 
-                HoverButton {
+                StyledButton {
                     id: visualizerButton
                     width: 60
                     text: globals.language === "hu" ? "Szemléltetés" : "Visualizer"

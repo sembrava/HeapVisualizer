@@ -215,7 +215,7 @@ Item {
             Row {
                 anchors.verticalCenter: parent.verticalCenter
 
-                HoverButton {
+                StyledButton {
                     width: 150
                     height: 35
                     enabled: editorModel.tree.length < maxSize
@@ -227,7 +227,7 @@ Item {
                     }
                 }
 
-                HoverButton {
+                StyledButton {
                     width: 150
                     height: 35
                     enabled: editorModel.tree.length > 0
@@ -248,7 +248,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
 
-                HoverButton {
+                StyledButton {
                     width: 150
                     height: 35
                     enabled: editorModel.tree.length > 0
@@ -260,7 +260,7 @@ Item {
                     }
                 }
 
-                HoverButton {
+                StyledButton {
                     width: 150
                     height: 35
                     enabled: editorModel.tree.length > 0
@@ -294,7 +294,7 @@ Item {
             text: globals.language === "hu" ? "Algoritmus kiválasztása" : "Choose algorithm"
         }
 
-        HoverButton {
+        StyledButton {
             anchors.right: parent.right
             text: "x"
 
@@ -357,7 +357,7 @@ Item {
             }
         }
 
-        HoverButton {
+        StyledButton {
             id: startButton
             text: globals.language === "hu" ? "Start" : "Start"
             anchors.right: parent.right
@@ -429,7 +429,7 @@ Item {
             text: globals.language === "hu" ? "Fa mentése" : "Save tree"
         }
 
-        HoverButton {
+        StyledButton {
             anchors.right: parent.right
             text: "x"
 
@@ -469,7 +469,7 @@ Item {
             }
         }
 
-        HoverButton {
+        StyledButton {
             text: globals.language === "hu" ? "Mentés" : "Save"
             anchors.right: parent.right
             anchors.bottom: parent.bottom
@@ -501,7 +501,7 @@ Item {
             text: globals.language === "hu" ? "Figyelmeztetés" : "Alert"
         }
 
-        HoverButton {
+        StyledButton {
             anchors.right: parent.right
             text: "x"
 
@@ -522,7 +522,7 @@ Item {
             }
         }
 
-        HoverButton {
+        StyledButton {
             id: yesButton
             text: globals.language === "hu" ? "Igen" : "Yes"
             anchors.right: parent.right
@@ -535,7 +535,7 @@ Item {
             }
         }
 
-        HoverButton {
+        StyledButton {
             id: noButton
             text: globals.language === "hu" ? "Nem" : "No"
             anchors.right: yesButton.left

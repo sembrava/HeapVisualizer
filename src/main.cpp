@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
-    QQuickStyle::setStyle("Fusion");
+    QQuickStyle::setStyle("Material");
 
     QQmlApplicationEngine engine;
 

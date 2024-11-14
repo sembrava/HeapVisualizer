@@ -63,7 +63,7 @@ protected:
     {
         return QString::fromStdString(g_qmlGlobals.getLanguage() == "hu"
         ? "A gyökér kulcsát (" + std::to_string(lastNode) + ") megcseréljük az utolsó rendezetlen csúcs kulcsával (" + std::to_string(root) + ")"
-        : "The root key (" + std::to_string(lastNode) + " is swapped with the key of the last unsorted node (" + std::to_string(root) + ")");
+        : "The root key (" + std::to_string(lastNode) + ") is swapped with the key of the last unsorted node (" + std::to_string(root) + ")");
     }
 
     static QString heapSortFinishedExplanation()
@@ -77,14 +77,14 @@ protected:
     {
         return QString::fromStdString(g_qmlGlobals.getLanguage() == "hu"
         ? "A legnagyobb kulcsot (" + std::to_string(key) + ") kimásoljuk"
-        : "The largest key (" + std::to_string(key) + " is copied");
+        : "The largest key (" + std::to_string(key) + ") is copied");
     }
 
     static QString rootKeyChangedExplanation(int rootKey, int lastNodeKey)
     {
         return QString::fromStdString(g_qmlGlobals.getLanguage() == "hu"
         ? "A gyökér kulcsát (" + std::to_string(rootKey) + ") kicseréljuk az utolsó csúcs kulcsával (" + std::to_string(lastNodeKey) + ")"
-        : "The root key (" + std::to_string(rootKey) + " is replaced with the key of the last node (" + std::to_string(lastNodeKey) + ")");
+        : "The root key (" + std::to_string(rootKey) + ") is replaced with the key of the last node (" + std::to_string(lastNodeKey) + ")");
     }
 
     static QString removeMaxFinishedExplanation()
@@ -98,14 +98,14 @@ protected:
     {
         return QString::fromStdString(g_qmlGlobals.getLanguage() == "hu"
         ? "Az utolsó csúcsot (" + std::to_string(key) + ") kitöröljük"
-        : "The last node (" + std::to_string(key) + " is removed");
+        : "The last node (" + std::to_string(key) + ") is removed");
     }
 
     static QString nodeAddedExplanation(int key)
     {
         return QString::fromStdString(g_qmlGlobals.getLanguage() == "hu"
         ? "Az új csúcsot (" + std::to_string(key) + ") beillesztjük a fa végére"
-        : "The new node (" + std::to_string(key) + " is inserted at the end of the tree");
+        : "The new node (" + std::to_string(key) + ") is inserted at the end of the tree");
     }
 
     static QString addNodeFinishedExplanation()

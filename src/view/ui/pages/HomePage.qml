@@ -8,7 +8,7 @@ Item {
 
     signal switchPage(string pageName)
 
-    HoverButton {
+    StyledButton {
         width: 100
         anchors.right: parent.right
         anchors.rightMargin: 10
@@ -26,7 +26,7 @@ Item {
         spacing: 10
         padding: 10
 
-        HoverButton {
+        StyledButton {
             id: createVisualizationButton
             width: 200
             text: globals.language === "hu" ? "Új szemléltetés" : "Create visualization"
@@ -77,7 +77,7 @@ Item {
                             }
                         }
 
-                        HoverButton {
+                        StyledButton {
                             id: deleteButton
                             anchors.left: parent.left
                             anchors.bottom: parent.bottom
@@ -88,7 +88,7 @@ Item {
                             }
                         }
 
-                        HoverButton {
+                        StyledButton {
                             id: openButton
                             anchors.right: parent.right
                             anchors.bottom: parent.bottom
@@ -130,7 +130,7 @@ Item {
             text: globals.language === "hu" ? "Új szemléltetés" : "Create visualization"
         }
 
-        HoverButton {
+        StyledButton {
             anchors.right: parent.right
             text: "x"
 
@@ -224,7 +224,7 @@ Item {
             }
         }
 
-        HoverButton {
+        StyledButton {
             text: globals.language === "hu" ? "Létrehozás" : "Create"
             anchors.right: parent.right
             anchors.bottom: parent.bottom

@@ -39,7 +39,7 @@ qt_add_qml_module(appHeapVisualizer
         SOURCES src/view/models/homemodel.h src/view/models/homemodel.cpp
         SOURCES src/view/models/editormodel.h src/view/models/editormodel.cpp
         SOURCES src/view/models/visualizermodel.h src/view/models/visualizermodel.cpp
-        QML_FILES src/view/ui/general/HoverButton.qml
+        QML_FILES src/view/ui/general/StyledButton.qml
         SOURCES src/view/models/completebinarytree.h
         SOURCES src/persistence/treefileinfo.h
         SOURCES src/globals.h

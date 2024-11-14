@@ -77,9 +77,12 @@ Item {
         }
 
         function onVisualizationReset() {
-            for (let i = 0; i < nodes.count; i++) {
-                nodes.itemAt(i).color = Colors.getElementColor("light", i)
-                array.itemAt(i).color = Colors.getElementColor("light", i)
+            for (let i = 0; i < maxSize; i++) {
+                if (nodes.itemAt(i))
+                    nodes.itemAt(i).color = Colors.getElementColor("light", i)
+
+                if (array.itemAt(i))
+                    array.itemAt(i).color = Colors.getElementColor("light", i)
             }
 
             extractedNode.visible = false
@@ -90,10 +93,12 @@ Item {
         }
 
         function onVisualizationFinished() {
-            for (let i = 0; i < nodes.count; i++) {
+            for (let i = 0; i < nodes.length; i++) {
                 nodes.itemAt(i).color = Colors.getElementColor("light", i)
                 array.itemAt(i).color = Colors.getElementColor("light", i)
             }
+
+            stepForwardButton.enabled = false
         }
 
         function onNodeExtracted(nodeKey) {
@@ -129,7 +134,7 @@ Item {
 
         function onNodeAdded() {
             nodes.itemAt(visualizerModel.tree.length - 1).color = "#f07b32"
-            array.itemAt(visualizerModel.tree.length - 1).color = "#e33d3d"
+            array.itemAt(visualizerModel.tree.length - 1).color = "#f07b32"
 
             nodes.itemAt(visualizerModel.tree.length - 1).selectAnimation.start()
         }
@@ -452,7 +457,7 @@ Item {
             color: "#dddddd"
             radius: 5
 
-            HoverButton {
+            StyledButton {
                 anchors.verticalCenter: parent.verticalCenter
                 width: 150
                 height: 35
@@ -469,17 +474,19 @@ Item {
                 height: parent.height
 
                 Row {
-                    HoverButton {
+                    StyledButton {
                         id: stepBackwardButton
                         text: "<"
                         enabled: false
 
                         onClicked: {
+                            stepForwardButton.enabled = true
+
                             visualizerModel.stepBackward()
                         }
                     }
 
-                    HoverButton {
+                    StyledButton {
                         id: stepForwardButton
                         text: ">"
 
