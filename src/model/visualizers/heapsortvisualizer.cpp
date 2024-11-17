@@ -15,6 +15,8 @@ void HeapSortVisualizer::stepForward()
 
     if (m_currentSnapshotIndex == m_snapshots.size())
     {
+        emit visualizationFinished();
+
         emit explanationChanged(heapSortFinishedExplanation());
 
         return;

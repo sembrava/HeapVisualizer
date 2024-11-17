@@ -95,9 +95,11 @@ Item {
         }
 
         function onVisualizationFinished() {
-            for (let i = 0; i < nodes.length; i++) {
-                nodes.itemAt(i).color = Colors.getElementColor(i)
-                array.itemAt(i).color = Colors.getElementColor(i)
+            for (let i = 0; i < nodes.count; i++) {
+                if (Qt.colorEqual(nodes.itemAt(i).color, Colors.getSelectedNodeColor())) {
+                    nodes.itemAt(i).color = Colors.getElementColor(i)
+                    array.itemAt(i).color = Colors.getElementColor(i)
+                }
             }
 
             stepForwardButton.enabled = false
@@ -181,6 +183,7 @@ Item {
                             color: Colors.getElementColor(index)
                             border.color: Colors.getBorderColor()
                             border.width: 1
+                            opacity: index < visualizerModel.tree.length ? 1 : 0.5
 
                             Text {
                                 anchors.centerIn: parent

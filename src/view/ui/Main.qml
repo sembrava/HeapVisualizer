@@ -85,6 +85,7 @@ Window {
         switch (pageName) {
             case "Home":
                 globals.currentFileName = ""
+                globals.currentlyEditedTree = []
                 pageLoader.source = "qrc:/HeapVisualizer/src/view/ui/pages/HomePage.qml"
 
                 homeButton.enabled = false

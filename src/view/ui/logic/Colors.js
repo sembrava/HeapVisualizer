@@ -111,7 +111,7 @@ function getIndexColor() {
 }
 
 function getNodeKeyColor() {
-    return "#222"
+    return "#222";
 }
 
 function getSelectedNodeColor() {

@@ -67,6 +67,7 @@ Item {
                             color: nodes.itemAt(index)?.nodeKey.focus ? Colors.getSelectedNodeColor() : Colors.getElementColor(index)
                             border.color: Colors.getBorderColor()
                             border.width: 1
+                            opacity: index < editorModel.tree.length ? 1 : 0.5
 
                             Text {
                                 id: elementKey
@@ -74,7 +75,7 @@ Item {
 
                                 text: editorModel.tree[index] ?? ""
                                 font.pixelSize: 18
-                                color: Colors.getIndexColor()
+                                color: Colors.getNodeKeyColor()
                             }
 
                             Text {
@@ -84,7 +85,7 @@ Item {
 
                                 text: index < editorModel.tree.length ? index : ""
                                 font.pixelSize: 10
-                                color: Colors.getNodeKeyColor()
+                                color: Colors.getIndexColor()
                             }
                         }
                     }
@@ -111,7 +112,7 @@ Item {
                     anchors.right: parent.right
                     anchors.rightMargin: 5
 
-                    text: globals.language === "hu" ? "💡Kattints egy cúcsra az értéke módosításához" : "💡Click on a node to edit its value"
+                    text: globals.language === "hu" ? "Kattints egy cúcsra az értéke módosításához" : "Click on a node to edit its value"
                 }
 
                 Repeater {
