@@ -1,104 +1,134 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Layouts 2.15
 import "../general"
 import "../logic/Utils.js" as Utils
+import "../logic/Colors.js" as Colors
 
 Item {
     property var homeModel: modelManager.createHomePageModel()
 
     signal switchPage(string pageName)
 
-    StyledButton {
-        width: 100
-        anchors.right: parent.right
-        anchors.rightMargin: 10
-        y: 10
-        text: globals.language === "hu" ? "Beállítások" : "Settings"
-
-        onClicked: {
-            switchPage("Settings")
-        }
-    }
-
     Column {
-        id: homePageContainer
         anchors.fill: parent
         spacing: 10
-        padding: 10
+        anchors.margins: 10
 
-        StyledButton {
-            id: createVisualizationButton
-            width: 200
-            text: globals.language === "hu" ? "Új szemléltetés" : "Create visualization"
+        Section {
+            id: homePageHeader
 
-            onClicked: {
-                newVisualizationPopup.open()
+            content: RowLayout {
+                width: parent.width
+                height: createVisualizationButton.height
+
+                StyledButton {
+                    id: createVisualizationButton
+                    width: 300
+                    bold: true
+                    text: globals.language === "hu" ? "Új szemléltetés" : "Create visualization"
+                    color: Colors.getMainButtonColor()
+                    hoverColor: Colors.getHoveredMainButtonColor()
+
+                    onClicked: {
+                        newVisualizationPopup.open()
+                    }
+                }
+
+                StyledButton {
+                    Layout.alignment: Qt.AlignRight
+                    id: settingsButton
+                    width: 150
+                    text: globals.language === "hu" ? "Beállítások" : "Settings"
+
+                    onClicked: {
+                        switchPage("Settings")
+                    }
+                }
             }
         }
 
-        Rectangle {
-            id: homePageDivider
-            width: parent.width - 20
-            height: 1
-            color: "#cccccc"
-        }
+        Section {
+            id: savedVisualizations
+            height: parent.height - homePageHeader.height - 10
 
-        ScrollView {
-            width: parent.width
-            height: parent.height
+            Rectangle {
+                anchors.fill: parent
+                visible: homeModel.savedVisualizations.length === 0
+                color: "transparent"
 
-            Grid {
-                id: savedVisualizationsContainer
-                columns: 4
-                spacing: 10
+                Text {
+                    y: 20
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: globals.language === "hu" ? "Az elmentett fák itt fognak megjelenni" : "Saved trees will appear here"
+                    color: Colors.getLighterTextColor()
+                    visible: homeModel.savedVisualizations.length === 0
+                    opacity: 0.5
+                    font.pixelSize: 16
+                }
+            }
 
-                Repeater {
-                    id: savedVisualizationsRepeater
-                    model: homeModel.savedVisualizations
+            content: ScrollView {
+                anchors.fill: parent
 
-                    delegate: Rectangle {
-                        color: "#cccccc"
-                        width: 209
-                        height: 100
-                        radius: 5
-                        clip: true
+                Column {
+                    id: savedVisualizationsContainer
+                    anchors.fill: parent
+                    spacing: 10
 
-                        Rectangle {
-                            width: parent.width
-                            height: 20
-                            color: "#bbbbbb"
+                    Repeater {
+                        id: savedVisualizationsRepeater
+                        model: homeModel.savedVisualizations
+
+                        delegate: Rectangle {
+                            color: Colors.getPrimaryDetailColor()
+                            width: savedVisualizationsContainer.width
+                            height: savedVisualizationRow.height
                             radius: 5
 
-                            Text {
-                                anchors.verticalCenter: parent.verticalCenter
-                                x: 5
-                                color: "white"
-                                text: modelData.name
-                            }
-                        }
+                            RowLayout {
+                                id: savedVisualizationRow
+                                anchors.fill: parent
+                                anchors.leftMargin: 5
+                                anchors.rightMargin: 5
+                                height: openButton.height
 
-                        StyledButton {
-                            id: deleteButton
-                            anchors.left: parent.left
-                            anchors.bottom: parent.bottom
-                            text: "x"
+                                Text {
+                                    text: modelData.name
+                                    font.pixelSize: 16
+                                    color: Colors.getTextColor()
+                                }
 
-                            onClicked: {
-                                homeModel.deleteVisualization(index)
-                            }
-                        }
+                                RowLayout {
+                                    height: openButton.height
+                                    Layout.alignment: Qt.AlignRight
 
-                        StyledButton {
-                            id: openButton
-                            anchors.right: parent.right
-                            anchors.bottom: parent.bottom
-                            text: globals.language === "hu" ? "Megnyitás" : "Open"
+                                    StyledButton {
+                                        id: openButton
+                                        text: globals.language === "hu" ? "Megnyitás" : "Open"
 
-                            onClicked: {
-                                globals.currentFileName = modelData.name
-                                globals.currentlyEditedTree = modelData.tree
+                                        onClicked: {
 
-                                switchPage("Editor")
+                                            globals.currentFileName = modelData.name
+                                            globals.currentlyEditedTree = modelData.tree
+
+                                            switchPage("Editor")
+                                        }
+                                    }
+
+                                    StyledButton {
+                                        id: deleteButton
+                                        text: globals.language === "hu" ? "Törlés" : "Delete"
+                                        fontColor: Colors.getTextColor()
+                                        color: Colors.getRedButtonColor()
+                                        hoverColor: Colors.getHoveredRedButtonColor()
+                                        activeColor: Colors.getActiveRedButtonColor()
+
+                                        onClicked: {
+                                            homeModel.deleteVisualization(index)
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -107,77 +137,59 @@ Item {
         }
     }
 
-    Popup {
+    Modal {
         id: newVisualizationPopup
-        width: 350
-        height: 300
-        anchors.centerIn: Overlay.overlay
-        modal: true
-        focus: true
-
-        background: Rectangle {
-            color: "white"
-            border.color: "#bbb"
-            radius: 5
-        }
+        width: 400
+        title: globals.language === "hu" ? "Új szemléltetés" : "New visualization"
 
         onClosed: {
-            customArrayError.visible = false
+            customArrayError.opacity = 0
         }
 
-        Text {
-            id: newVisualizationTitle
-            text: globals.language === "hu" ? "Új szemléltetés" : "Create visualization"
-        }
-
-        StyledButton {
-            anchors.right: parent.right
-            text: "x"
-
-            onClicked: {
-                newVisualizationPopup.close()
-            }
-        }
-
-        Column {
-            anchors.topMargin: 10
-            anchors.top: newVisualizationTitle.bottom
+        body: Column {
+            id: content
             spacing: 10
+            width: children.implicitWidth
 
-            RadioButton {
+            StyledRadioButton {
                 id: openEditorRadioButton
                 text: globals.language === "hu" ? "Szerkesztő megnyitása" : "Open editor"
                 checked: true
+                x: 5
             }
 
-            RadioButton {
+            StyledRadioButton {
                 id: generateRandomRadioButton
                 text: globals.language === "hu" ? "Véletlenszerű tömb generálása" : "Generate randomly"
             }
 
             Row {
-                x: 20
                 spacing: 5
+                x: 40
 
                 Text {
                     text: globals.language === "hu" ? "Tömb mérete" : "Array size"
-                    color: generateRandomRadioButton.checked ? "#000" : "#ccc"
+                    color: Colors.getTextColor()
+                    opacity: generateRandomRadioButton.checked ? 1 : 0.5
                 }
 
                 Rectangle {
-                    anchors.leftMargin: 10
                     width: 50
                     height: randomArrayLength.implicitHeight
-                    border.color: generateRandomRadioButton.checked ? "#ccc" : "#eee"
+                    border.color: Colors.getBorderColor()
+                    opacity: generateRandomRadioButton.checked ? 1 : 0.5
+                    color: Colors.getTextInputColor()
                     radius: 3
 
                     TextInput {
                         id: randomArrayLength
                         width: parent.width
                         padding: 2
+                        clip: true
                         enabled: generateRandomRadioButton.checked
                         text: "15"
-                        color: generateRandomRadioButton.checked ? "#000" : "#ccc"
+                        color: Colors.getTextColor()
+                        opacity: enabled ? 1 : 0.5
 
                         validator: RegularExpressionValidator {
                             regularExpression: /^[1-9]$|^1[0-5]$/
@@ -186,31 +198,38 @@ Item {
                 }
             }
 
-            RadioButton {
+            StyledRadioButton {
                 id: fromArrayRadioButton
                 text: globals.language === "hu" ? "Generálás tömb megadásával" : "Create from array"
 
                 onCheckedChanged: {
                     if (!checked)
-                        customArrayError.visible = false
+                        customArrayError.opacity = 0
                 }
             }
 
-            Rectangle {
-                id: customArrayContainer
-                x: 20
-                anchors.leftMargin: 10
-                width: 200
-                height: randomArrayLength.implicitHeight
-                border.color: fromArrayRadioButton.checked ? "#ccc" : "#eee"
-                radius: 3
+            Column {
+                spacing: 10
+                x: 40
 
-                TextInput {
-                    id: customArray
-                    width: parent.width
-                    padding: 2
-                    enabled: fromArrayRadioButton.checked
-                    color: fromArrayRadioButton.checked ? "#000" : "#ccc"
+                Rectangle {
+                    id: customArrayContainer
+                    width: 275
+                    height: randomArrayLength.implicitHeight
+                    border.color: Colors.getBorderColor()
+                    opacity: fromArrayRadioButton.checked ? 1 : 0.5
+                    color: Colors.getTextInputColor()
+                    radius: 3
+
+                    TextInput {
+                        id: customArray
+                        width: parent.width
+                        padding: 2
+                        clip: true
+                        enabled: fromArrayRadioButton.checked
+                        opacity: enabled ? 1 : 0.5
+                        color:  Colors.getTextColor()
+                    }
                 }
 
                 Text {
@@ -218,38 +237,39 @@ Item {
                     text: globals.language === "hu" ? "A bemenet egy maximum 15 hosszú, -999 és 999 közötti értékekből \nálló, vesszővel elválasztott lista legyen" : "Input must be at most 15 comma separated numbers from -999 to 999"
                     font.pixelSize: 10
                     color: "red"
-                    y: 20
-                    visible: false
+                    opacity: 0
                 }
             }
         }
 
-        StyledButton {
-            text: globals.language === "hu" ? "Létrehozás" : "Create"
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
+        footer: RowLayout {
+            Layout.alignment: Qt.AlignRight
 
-            onClicked: {
-                if (fromArrayRadioButton.checked && !Utils.isValidArrayLiteral(customArray.text)) {
-                    customArrayError.visible = true
-                    return;
-                }
+            StyledButton {
+                text: globals.language === "hu" ? "Létrehozás" : "Create"
 
-                globals.currentFileName = ""
-                globals.currentlyEditedTree = []
+                onClicked: {
+                    if (fromArrayRadioButton.checked && !Utils.isValidArrayLiteral(customArray.text)) {
+                        customArrayError.opacity = 1
+                        return;
+                    }
 
-                if (openEditorRadioButton.checked) {
-                    switchPage("Editor")
-                }
+                    globals.currentFileName = ""
+                    globals.currentlyEditedTree = []
 
-                else if (generateRandomRadioButton.checked) {
-                    globals.currentlyEditedTree = homeModel.generateRandomArray(Number(randomArrayLength.text))
-                    switchPage("Editor")
-                }
+                    if (openEditorRadioButton.checked) {
+                        switchPage("Editor")
+                    }
 
-                else if (fromArrayRadioButton.checked) {
-                    globals.currentlyEditedTree = customArray.text.split(",").map(num => Number(num))
-                    switchPage("Editor")
+                    else if (generateRandomRadioButton.checked) {
+                        globals.currentlyEditedTree = homeModel.generateRandomArray(Number(randomArrayLength.text))
+                        switchPage("Editor")
+                    }
+
+                    else if (fromArrayRadioButton.checked) {
+                        globals.currentlyEditedTree = customArray.text.split(",").map(num => Number(num))
+                        switchPage("Editor")
+                    }
                 }
             }
         }

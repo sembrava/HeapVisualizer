@@ -11,8 +11,6 @@ class SettingsModel : public QObject
 public:
     explicit SettingsModel(SettingsManager* settingsManager, QObject *parent = nullptr);
 
-    ~SettingsModel();
-
     Q_INVOKABLE void setLanguage(const QString& language);
 
     Q_INVOKABLE void setTheme(const QString& theme);

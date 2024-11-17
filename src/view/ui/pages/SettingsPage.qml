@@ -1,5 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import "../general"
+import "../logic/Colors.js" as Colors
 
 Item {
     property var settingsModel: modelManager.createSettingsPageModel()
@@ -9,56 +11,70 @@ Item {
     Column {
         anchors.fill: parent
         spacing: 10
-        padding: 10
+        anchors.margins: 10
 
-        Text {
-            text: globals.language === "hu" ? "Nyelv" : "Language"
-        }
-
-        Column {
-            RadioButton {
-                text: "English"
-                checked: globals.language === "en"
-
-                onCheckedChanged: {
-                    if (checked && globals.language !== "en")
-                        settingsModel.setLanguage("en");
-                }
-            }
-
-            RadioButton {
-                text: "Magyar"
-                checked: globals.language === "hu"
-
-                onCheckedChanged: {
-                    if (checked && globals.language !== "hu")
-                        settingsModel.setLanguage("hu")
-                }
+        Section {
+            content: Text {
+                color: Colors.getTextColor()
+                font.bold: true
+                font.pixelSize: 18
+                text: globals.language === "hu" ? "Nyelv" : "Language"
             }
         }
 
-        Text {
-            text: globals.language === "hu" ? "Téma" : "Theme"
-        }
+        Section {
+            content: Column {
+                StyledRadioButton {
+                    text: "English"
+                    checked: globals.language === "en"
 
-        Column {
-            RadioButton {
-                text: globals.language === "hu" ? "Világos" : "Light"
-                checked: globals.isLightTheme
+                    onCheckedChanged: {
+                        if (checked && globals.language !== "en")
+                            settingsModel.setLanguage("en");
+                    }
+                }
 
-                onCheckedChanged: {
-                    if (checked && globals.isLightTheme !== checked)
-                        settingsModel.setTheme("light")
+                StyledRadioButton {
+                    text: "Magyar"
+                    checked: globals.language === "hu"
+
+                    onCheckedChanged: {
+                        if (checked && globals.language !== "hu")
+                            settingsModel.setLanguage("hu")
+                    }
                 }
             }
+        }
 
-            RadioButton {
-                text: globals.language === "hu" ? "Sötét" : "Dark"
-                checked: !globals.isLightTheme
+        Section {
+            content: Text {
+                color: Colors.getTextColor()
+                font.bold: true
+                font.pixelSize: 18
+                text: globals.language === "hu" ? "Téma" : "Theme"
+            }
+        }
 
-                onCheckedChanged: {
-                    if (checked && globals.isLightTheme === checked)
-                        settingsModel.setTheme("dark")
+        Section {
+            content: Column {
+                StyledRadioButton {
+                    text: globals.language === "hu" ? "Világos" : "Light"
+                    checked: globals.isLightTheme
+
+                    onCheckedChanged: {
+                        if (checked && globals.isLightTheme !== checked)
+                            settingsModel.setTheme("light")
+                    }
+                }
+
+                StyledRadioButton {
+                    text: globals.language === "hu" ? "Sötét" : "Dark"
+                    checked: !globals.isLightTheme
+
+                    onCheckedChanged: {
+                        if (checked && globals.isLightTheme === checked)
+                            settingsModel.setTheme("dark")
+                    }
                 }
             }
         }

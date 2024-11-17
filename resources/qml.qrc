@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
+        <file>icons/editor-icon.svg</file>
+        <file>icons/home-icon.svg</file>
+        <file>icons/visualizer-icon.svg</file>
     </qresource>
 </RCC>

@@ -65,6 +65,21 @@ qt_add_qml_module(appHeapVisualizer
         SOURCES src/persistence/settings.h
         SOURCES src/view/models/settingsmodel.h src/view/models/settingsmodel.cpp
         SOURCES src/view/ui/qmlglobals.cpp
+        QML_FILES src/view/ui/general/Section.qml
+        QML_FILES src/view/ui/general/StyledRadioButton.qml
+        QML_FILES
+        QML_FILES src/view/ui/general/Modal.qml
+        QML_FILES
+        QML_FILES src/view/ui/general/SidebarButton.qml
+        RESOURCES
+        RESOURCES resources/icons/editor-icon.svg
+        RESOURCES resources/icons/home-icon.svg
+        RESOURCES
+        RESOURCES resources/icons/visualizer-icon.svg
+)
+
+qt_add_resources(
+    project_resources resources.qrc
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

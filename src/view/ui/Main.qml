@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "general"
+import "logic/Colors.js" as Colors
 
 Window {
     id: window
@@ -12,46 +13,49 @@ Window {
     minimumHeight: height
     visible: true
     title: (globals.currentFileName.length > 0 ? globals.currentFileName + " - " : "") + "HeapVisualizer"
+    color: Colors.getBackgroundColor()
+    Material.theme: globals.isLightTheme ? Material.Light : Material.Dark
 
     Row {
         anchors.fill: parent
 
         Rectangle {
             id: sidebarContainer
-            width: 75
+            width: 80
             height: parent.height
-            color: "#eeeeee"
+            color: Colors.getSectionColor()
 
             Column {
                 anchors.centerIn: parent
                 spacing: 10
 
-                StyledButton {
+                SidebarButton {
                     id: homeButton
-                    width: 60
-                    text: globals.language === "hu" ? "Főoldal" : "Home"
+                    source: "qrc:/HeapVisualizer/resources/icons/home-icon.svg"
+                    title: globals.language === "hu" ? "Főoldal" : "Home"
                     enabled: false
+                    selected: true
 
                     onClicked: {
                         onPageSwitched("Home")
                     }
                 }
 
-                StyledButton {
+                SidebarButton {
                     id: editorButton
-                    width: 60
-                    text: globals.language === "hu" ? "Szerkesztő" : "Editor"
-                    enabled: false
+                    source: "qrc:/HeapVisualizer/resources/icons/editor-icon.svg"
+                    title: globals.language === "hu" ? "Szerkesztő" : "Editor"
+                    enabled: true
 
                     onClicked: {
                         onPageSwitched("Editor")
                     }
                 }
 
-                StyledButton {
+                SidebarButton {
                     id: visualizerButton
-                    width: 60
-                    text: globals.language === "hu" ? "Szemléltetés" : "Visualizer"
+                    source: "qrc:/HeapVisualizer/resources/icons/visualizer-icon.svg"
+                    title: globals.language === "hu" ? "Szemléltetés" : "Visualizer"
                     enabled: false
 
                     onClicked: {
@@ -76,14 +80,19 @@ Window {
     }
 
     function onPageSwitched(pageName, tree) {
+        pageLoader.source = ""
+
         switch (pageName) {
             case "Home":
                 globals.currentFileName = ""
                 pageLoader.source = "qrc:/HeapVisualizer/src/view/ui/pages/HomePage.qml"
 
                 homeButton.enabled = false
-                editorButton.enabled = false
+                homeButton.selected = true
+                editorButton.enabled = true
+                editorButton.selected = false
                 visualizerButton.enabled = false
+                visualizerButton.selected = false
 
                 break
 
@@ -91,8 +100,11 @@ Window {
                 pageLoader.source = "qrc:/HeapVisualizer/src/view/ui/pages/EditorPage.qml"
 
                 homeButton.enabled = true
+                homeButton.selected = false
                 editorButton.enabled = false
+                editorButton.selected = true
                 visualizerButton.enabled = false
+                visualizerButton.selected = false
 
                 break
 
@@ -100,8 +112,11 @@ Window {
                 pageLoader.source = "qrc:/HeapVisualizer/src/view/ui/pages/VisualizerPage.qml"
 
                 homeButton.enabled = true
+                homeButton.selected = false
                 editorButton.enabled = true
+                editorButton.selected = false
                 visualizerButton.enabled = false
+                visualizerButton.selected = true
 
                 break
 
@@ -109,8 +124,11 @@ Window {
                 pageLoader.source = "qrc:/HeapVisualizer/src/view/ui/pages/SettingsPage.qml"
 
                 homeButton.enabled = true
-                editorButton.enabled = false
+                homeButton.selected = false
+                editorButton.enabled = true
+                editorButton.selected = false
                 visualizerButton.enabled = false
+                visualizerButton.selected = false
 
                 break;
 

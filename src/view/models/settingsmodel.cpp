@@ -6,11 +6,6 @@ SettingsModel::SettingsModel(SettingsManager* settingsManager, QObject* parent)
     , QObject(parent)
 {}
 
-SettingsModel::~SettingsModel()
-{
-    delete m_settingsManager;
-}
-
 void SettingsModel::setLanguage(const QString& language)
 {
     g_qmlGlobals.setLanguage(language);
