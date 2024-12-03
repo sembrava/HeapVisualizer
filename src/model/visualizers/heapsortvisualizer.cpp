@@ -1,8 +1,8 @@
 #include "heapsortvisualizer.h"
 #include "../heapalgorithms.h"
 
-HeapSortVisualizer::HeapSortVisualizer(std::vector<int>& array, const bool documentHeapification)
-    : m_snapshots(HeapAlgorithms::heapSort(array, documentHeapification))
+HeapSortVisualizer::HeapSortVisualizer(std::vector<int>& array)
+    : m_snapshots(HeapAlgorithms::heapSort(array))
     , m_currentSnapshotIndex(-1)
 {}
 
@@ -30,8 +30,6 @@ void HeapSortVisualizer::stepForward()
         emit sortedBoundChanged(currentSnapshot.getSortedBoundIndex().value(), currentTree);
 
         emit explanationChanged(sortedBoundIndexChangedExplanation(currentTree[currentSnapshot.getSortedBoundIndex().value()]));
-
-        // TODO: emit step forward disable or maybe expose current snapshot index to qml and disable dynamically
     }
 
     else if (m_currentSnapshotIndex == 0)

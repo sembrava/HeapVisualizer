@@ -34,7 +34,7 @@ QObject* ModelManager::createEditorPageModel(QVariantList tree)
     return configureModel(new EditorModel(treeCopy, g_fileManager));
 }
 
-QObject* ModelManager::createVisualizerPageModel(QVariantList tree, const QString& algorithmName, const bool documentHeapification, const int newNodeKey)
+QObject* ModelManager::createVisualizerPageModel(QVariantList tree, const QString& algorithmName, const int newNodeKey)
 {
     std::vector<int> vectorTree;
 
@@ -46,7 +46,7 @@ QObject* ModelManager::createVisualizerPageModel(QVariantList tree, const QStrin
     HeapAlgorithmVisualizer* visualizer = nullptr;
 
     if (algorithmName == "heapSort")
-        visualizer = new HeapSortVisualizer(vectorTree, documentHeapification);
+        visualizer = new HeapSortVisualizer(vectorTree);
 
     else if (algorithmName == "removeMax")
         visualizer = new RemoveMaxVisualizer(vectorTree);
@@ -54,7 +54,7 @@ QObject* ModelManager::createVisualizerPageModel(QVariantList tree, const QStrin
     else if (algorithmName == "insertNode")
         visualizer = new AddNodeVisualizer(vectorTree, newNodeKey);
 
-    return configureModel(new VisualizerModel(tree, g_fileManager, visualizer));
+    return configureModel(new VisualizerModel(tree, visualizer));
 }
 
 QObject *ModelManager::createSettingsPageModel()

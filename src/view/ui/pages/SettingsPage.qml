@@ -26,10 +26,10 @@ Item {
             content: Column {
                 StyledRadioButton {
                     text: "English"
-                    checked: globals.language === "en"
+                    checked: globals.language !== "hu"
 
                     onCheckedChanged: {
-                        if (checked && globals.language !== "en")
+                        if (checked && globals.language === "hu")
                             settingsModel.setLanguage("en");
                     }
                 }

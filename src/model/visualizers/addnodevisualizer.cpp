@@ -45,7 +45,7 @@ void AddNodeVisualizer::stepForward()
             );
 
             emit explanationChanged(
-                comparedNodeIndexesChangedExplanation(
+                addedNodeComparedIndexesChangedExplanation(
                     currentTree[currentSnapshot.getGreaterComparedNodeIndex().value()], currentTree[currentSnapshot.getSmallerComparedNodeIndex().value()]
                 )
             );
@@ -62,7 +62,7 @@ void AddNodeVisualizer::stepForward()
                 );
 
                 emit explanationChanged(
-                    comparedNodeIndexesChangedExplanation(
+                    addedNodeComparedIndexesChangedExplanation(
                         currentTree[currentSnapshot.getGreaterComparedNodeIndex().value()], currentTree[currentSnapshot.getSmallerComparedNodeIndex().value()]
                     )
                 );

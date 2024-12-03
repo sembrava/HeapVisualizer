@@ -17,22 +17,18 @@ class HeapAlgorithms
 public:
     /**
      * @brief Standard heap sort implementation. A snapshot of the array state and additional
-     * metadata needed for the visualization is captured during the execution of the algorithm. Only
-     * works with arrays with a size greater than 0.
+     * metadata needed for the visualization is captured during the execution of the algorithm.
      *
      * @param array The array to be sorted.
-     * @param documentHeapification If false, snapshots captured during the heapification stage of
-     * the algorithm will be discarded. This can be useful if we don't want to visualize this stage.
      * @return An array of the captured snaphsots.
      * @throws std::invalid_argument If the given array is empty.
      */
-    static std::vector<HeapSortSnapshot> heapSort(std::vector<int>& array, const bool documentHeapification);
+    static std::vector<HeapSortSnapshot> heapSort(std::vector<int>& array);
 
     /**
      * @brief Removes the largest element in the array, which is always at index 0 and restores the
      * heap property. A snapshot of the array state and additional metadata needed for the
-     * visualization is captured during the execution of the algorithm. Only works with arrays with
-     * a size greater than 0.
+     * visualization is captured during the execution of the algorithm.
      *
      * @param array The array on which the algorithm will be performed.
      * @return An array of the captured snapshots.
@@ -43,7 +39,7 @@ public:
     /**
      * @brief Appends a new element to the end of the array and restores the heap property. A
      * snapshot of the array state and additional metadata needed for the visualization is captured
-     * during the execution of the algorithm. Only works with arrays with a size greater than 0.
+     * during the execution of the algorithm.
      *
      * @param array The array to which the element will be appended.
      * @param newNodeKey The value of the new element.

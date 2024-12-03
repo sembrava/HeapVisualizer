@@ -8,6 +8,7 @@
 class SettingsModel : public QObject
 {
     Q_OBJECT
+
 public:
     explicit SettingsModel(SettingsManager* settingsManager, QObject *parent = nullptr);
 

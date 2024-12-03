@@ -27,11 +27,6 @@ HomeModel::~HomeModel()
         delete qvariant_cast<CompleteBinaryTree*>(tree);
 }
 
-void HomeModel::openVisualization(int index) const
-{
-    return;
-}
-
 void HomeModel::deleteVisualization(int index)
 {
     if (index >= m_savedVisualizations.size() || index < 0)
@@ -41,18 +36,22 @@ void HomeModel::deleteVisualization(int index)
 
     m_savedVisualizations.removeAt(index);
 
-    m_fileManager->remove(name.toStdString());
+    try
+    {
+        m_fileManager->remove(name.toStdString());
+    }
+    catch (...) { }
 
     emit savedVisualizationsChanged();
 }
 
-QVariantList HomeModel::generateRandomArray(int arraySize)
+QVariantList HomeModel::generateRandomArray(const int arraySize)
 {
     QVariantList array;
 
     std::random_device seed;
     std::mt19937 generator(seed());
-    std::uniform_int_distribution<> distribution(1, 100);
+    std::uniform_int_distribution<> distribution(0, 100);
 
     for (int i = 0; i < arraySize; i++)
     {

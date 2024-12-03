@@ -17,7 +17,7 @@ public:
 
     Q_INVOKABLE QObject* createEditorPageModel(QVariantList tree);
 
-    Q_INVOKABLE QObject* createVisualizerPageModel(QVariantList tree, const QString& algorithmName, const bool documentHeapification, const int newNodeKey);
+    Q_INVOKABLE QObject* createVisualizerPageModel(QVariantList tree, const QString& algorithmName, const int newNodeKey);
 
     Q_INVOKABLE QObject* createSettingsPageModel();
 

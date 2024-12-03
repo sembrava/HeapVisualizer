@@ -108,6 +108,13 @@ protected:
         : "The new node (" + std::to_string(key) + ") is inserted at the end of the tree");
     }
 
+    static QString addedNodeComparedIndexesChangedExplanation(int greater, int smaller)
+    {
+        return QString::fromStdString(g_qmlGlobals.getLanguage() == "hu"
+        ? "A beillesztett csúcs kulcsát (" + std::to_string(greater) + ") összehasonlítjuk a szülője kulcsával (" + std::to_string(smaller) + ")"
+        : "The key of the inserted node (" + std::to_string(greater) + ") is compared with the key of its parent (" + std::to_string(smaller) + ")");
+    }
+
     static QString addNodeFinishedExplanation()
     {
         return QString::fromStdString(g_qmlGlobals.getLanguage() == "hu"

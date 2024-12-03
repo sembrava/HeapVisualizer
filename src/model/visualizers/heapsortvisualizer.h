@@ -9,7 +9,7 @@
 class HeapSortVisualizer : public HeapAlgorithmVisualizer
 {
 public:
-    explicit HeapSortVisualizer(std::vector<int>& array, const bool documentHeapification);
+    explicit HeapSortVisualizer(std::vector<int>& array);
 
     void stepForward() override;
 

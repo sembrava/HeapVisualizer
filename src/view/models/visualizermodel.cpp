@@ -1,9 +1,8 @@
 #include "visualizermodel.h"
 #include "../../utils/utils.h"
 
-VisualizerModel::VisualizerModel(QVariantList& tree, FileManager* fileManager, HeapAlgorithmVisualizer* visualizer, QObject* parent)
+VisualizerModel::VisualizerModel(QVariantList& tree, HeapAlgorithmVisualizer* visualizer, QObject* parent)
     : m_tree(tree)
-    , m_fileManager(fileManager)
     , m_visualizer(visualizer)
     , m_sortedBoundIndex(m_tree.size() + 1)
     , QObject{parent}
@@ -85,6 +84,9 @@ void VisualizerModel::onVisualizationFinished()
 
 void VisualizerModel::onNodeExtracted(int nodeKey)
 {
+    m_tree[0] = nodeKey;
+    emit treeChanged();
+
     emit nodeExtracted(nodeKey);
 }
 

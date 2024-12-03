@@ -5,7 +5,6 @@ QmlGlobals::QmlGlobals(QObject *parent)
     : m_currentFileName("")
     , m_currentlyEditedTree(QVariantList())
     , m_currentAlgorithm("")
-    , m_documentHeapification(true)
     , m_newNodeKey(0)
     , m_language(QString::fromStdString(g_settingsManager->getSettings().getLanguage()))
     , m_isLightTheme(QString::fromStdString(g_settingsManager->getSettings().getTheme()) == "light")
@@ -17,8 +16,6 @@ QString QmlGlobals::getCurrentFileName() const { return m_currentFileName; }
 QVariantList QmlGlobals::getCurrentlyEditedTree() const { return m_currentlyEditedTree; }
 
 QString QmlGlobals::getCurrentAlgorithm() const { return m_currentAlgorithm; }
-
-bool QmlGlobals::getDocumentHeapification() const { return m_documentHeapification; }
 
 int QmlGlobals::getNewNodeKey() const { return m_newNodeKey; }
 
@@ -44,12 +41,6 @@ void QmlGlobals::setCurrentAlgorithm(const QString &newAlgorithm)
     emit currentAlgorithmChanged();
 }
 
-void QmlGlobals::setDocumentHeapification(bool newValue)
-{
-    m_documentHeapification = newValue;
-    emit documentHeapificationChanged();
-}
-
 void QmlGlobals::setNewNodeKey(int newKey)
 {
     m_newNodeKey = newKey;
@@ -66,17 +57,4 @@ void QmlGlobals::setIsLightTheme(bool newValue)
 {
     m_isLightTheme = newValue;
     emit isLightThemeChanged();
-}
-
-void QmlGlobals::addNode(int key)
-{
-    m_currentlyEditedTree.append(key);
-}
-
-void QmlGlobals::removeLastNode()
-{
-    if (m_currentlyEditedTree.size() >= 0)
-    {
-        m_currentlyEditedTree.pop_back();
-    }
 }

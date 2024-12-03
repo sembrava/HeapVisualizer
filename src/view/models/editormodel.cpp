@@ -3,18 +3,8 @@
 EditorModel::EditorModel(QVariantList& tree, FileManager* fileManager, QObject *parent)
     : m_tree(tree)
     , m_fileManager(fileManager)
-    , m_currentlySelectedNodeIndex(-1)
     , QObject(parent)
 {}
-
-void EditorModel::setCurrentlySelectedNodeIndex(int newIndex)
-{
-    if (newIndex == m_currentlySelectedNodeIndex)
-        return;
-
-    m_currentlySelectedNodeIndex = newIndex;
-    emit currentlySelectedNodeIndexChanged();
-}
 
 void EditorModel::addNode()
 {
@@ -55,5 +45,9 @@ void EditorModel::saveVisualization(const QString& name, QVariantList tree)
         vectorTree.push_back(qvariant_cast<int>(node));
     }
 
-    m_fileManager->save(name.toStdString(), vectorTree);
+    try
+    {
+        m_fileManager->save(name.toStdString(), vectorTree);
+    }
+    catch (...) { }
 }

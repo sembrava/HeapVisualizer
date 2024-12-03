@@ -43,7 +43,13 @@ std::vector<TreeFileInfo> CsvFileManager::loadAll()
     std::vector<TreeFileInfo> trees;
 
     for (const auto& entry : std::filesystem::directory_iterator(m_path))
-        trees.push_back(load(entry.path().stem().string()));
+    {
+        try
+        {
+            trees.push_back(load(entry.path().stem().string()));
+        }
+        catch (...) { }
+    }
 
     return trees;
 }

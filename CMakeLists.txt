@@ -20,11 +20,9 @@ qt_add_qml_module(appHeapVisualizer
         QML_FILES src/view/ui/Main.qml
         SOURCES src/main.cpp
         SOURCES src/persistence/filemanager.h
-        SOURCES
         SOURCES src/persistence/csvfilemanager.h src/persistence/csvfilemanager.cpp
         SOURCES src/utils/utils.h
         SOURCES src/utils/utils.cpp
-        SOURCES
         SOURCES src/model/snapshots/heapsortsnapshot.h
         SOURCES src/model/snapshots/removemaxsnapshot.h
         SOURCES src/model/snapshots/addnodesnapshot.h
@@ -43,19 +41,11 @@ qt_add_qml_module(appHeapVisualizer
         SOURCES src/view/models/completebinarytree.h
         SOURCES src/persistence/treefileinfo.h
         SOURCES src/globals.h
-        QML_FILES
         QML_FILES src/view/ui/logic/PositionCalculator.js
-        QML_FILES
-        QML_FILES
         QML_FILES src/view/ui/logic/Animations.js
-        QML_FILES
-        SOURCES
         SOURCES src/view/ui/qmlglobals.h
-        SOURCES
-        SOURCES
         SOURCES src/model/visualizers/removemaxvisualizer.h src/model/visualizers/removemaxvisualizer.cpp
         QML_FILES src/view/ui/logic/Utils.js
-        SOURCES
         SOURCES src/model/visualizers/addnodevisualizer.h src/model/visualizers/addnodevisualizer.cpp
         QML_FILES src/view/ui/logic/Colors.js
         QML_FILES src/view/ui/pages/SettingsPage.qml
@@ -67,15 +57,12 @@ qt_add_qml_module(appHeapVisualizer
         SOURCES src/view/ui/qmlglobals.cpp
         QML_FILES src/view/ui/general/Section.qml
         QML_FILES src/view/ui/general/StyledRadioButton.qml
-        QML_FILES
         QML_FILES src/view/ui/general/Modal.qml
-        QML_FILES
         QML_FILES src/view/ui/general/SidebarButton.qml
-        RESOURCES
         RESOURCES resources/icons/editor-icon.svg
         RESOURCES resources/icons/home-icon.svg
-        RESOURCES
         RESOURCES resources/icons/visualizer-icon.svg
+        QML_FILES
 )
 
 qt_add_resources(

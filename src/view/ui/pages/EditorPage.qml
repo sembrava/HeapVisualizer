@@ -156,7 +156,6 @@ Item {
                             id: nodeKey
                             anchors.centerIn: parent
                             padding: 15
-                            focus: editorModel.currentlySelectedNodeIndex === index
                             color: Colors.getNodeKeyColor()
 
                             text: editorModel.tree[index]
@@ -264,6 +263,7 @@ Item {
 
                         onClicked: {
                             syncTree()
+                            newNodeKeyError.opacity = 0
                             algorithmSelector.open()
                         }
                     }
@@ -289,6 +289,7 @@ Item {
 
             StyledRadioButton {
                 id: removeMaxRadioButton
+                x: -3
                 text: globals.language === "hu" ? "Maximum kiválasztás" : "Remove max"
             }
 
@@ -333,21 +334,19 @@ Item {
                     }
                 }
             }
+
+            Text {
+                id: newNodeKeyError
+                x: 20
+                text: globals.language === "hu" ? "Ez a mező nem lehet üres" : "This field is mandatory"
+                color: "red"
+                font.pixelSize: 12
+                opacity: 0
+            }
         }
 
         footer: RowLayout {
             Layout.alignment: Qt.AlignRight
-
-            CheckBox {
-                id: skipHeapificationCheckbox
-                text: globals.language === "hu" ? "Kupaccá alakítás átugrása" : "Skip heapification"
-                enabled: heapSortRadioButton.checked
-                scale: 0.8
-
-                onCheckedChanged: {
-                    globals.documentHeapification = !skipHeapificationCheckbox.checked
-                }
-            }
 
             StyledButton {
                 id: startButton
@@ -372,6 +371,11 @@ Item {
                     }
 
                     else if (insertNodeRadioButton.checked) {
+                        if (newNodeKey.text.length < 1) {
+                            newNodeKeyError.opacity = 1
+                            return
+                        }
+
                         globals.newNodeKey = Number(newNodeKey.text)
                         globals.currentAlgorithm = "insertNode"
 
@@ -434,6 +438,9 @@ Item {
                 text: globals.language === "hu" ? "Mentés" : "Save"
 
                 onClicked: {
+                    if (fileName.text.length < 1)
+                        return;
+
                     editorModel.saveVisualization(fileName.text, globals.currentlyEditedTree)
 
                     saveVisualizationPopup.close()

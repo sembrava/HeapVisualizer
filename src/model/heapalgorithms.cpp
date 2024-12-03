@@ -2,18 +2,15 @@
 
 #include <stdexcept>
 
-std::vector<HeapSortSnapshot> HeapAlgorithms::heapSort(std::vector<int>& array, const bool documentHeapification)
+std::vector<HeapSortSnapshot> HeapAlgorithms::heapSort(std::vector<int>& array)
 {
-    if (array.empty())
-        throw std::invalid_argument("The provided array is empty");
-
     std::vector<HeapSortSnapshot> snapshots;
+
+    if (array.empty())
+        return snapshots;
 
     for (int i = Utils::getParent(array.size() - 1); i >= 0; i--)
         sink(snapshots, array, i, array.size() - 1, std::nullopt);
-
-    if (!documentHeapification)
-        snapshots.clear();
 
     for (int i = array.size() - 1; i > 0; i--)
     {
@@ -32,10 +29,10 @@ std::vector<HeapSortSnapshot> HeapAlgorithms::heapSort(std::vector<int>& array, 
 
 std::vector<RemoveMaxSnapshot> HeapAlgorithms::removeMax(std::vector<int>& array)
 {
-    if (array.empty())
-        throw std::invalid_argument("The provided tree is empty");
-
     std::vector<RemoveMaxSnapshot> snapshots;
+
+    if (array.empty())
+        return snapshots;
 
     const int max = array[0];
 
@@ -56,9 +53,6 @@ std::vector<RemoveMaxSnapshot> HeapAlgorithms::removeMax(std::vector<int>& array
 
 std::vector<AddNodeSnapshot> HeapAlgorithms::addNode(std::vector<int>& array, const int newNodeKey)
 {
-    if (array.empty())
-        throw std::invalid_argument("The provided tree is empty");
-
     std::vector<AddNodeSnapshot> snapshots;
 
     array.push_back(newNodeKey);

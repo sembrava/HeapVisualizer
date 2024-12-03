@@ -7,7 +7,7 @@ import "../logic/Animations.js" as Animations
 import "../logic/Colors.js" as Colors
 
 Item {
-    property var visualizerModel: modelManager.createVisualizerPageModel(globals.currentlyEditedTree, globals.currentAlgorithm, globals.documentHeapification, globals.newNodeKey)
+    property var visualizerModel: modelManager.createVisualizerPageModel(globals.currentlyEditedTree, globals.currentAlgorithm, globals.newNodeKey)
     property int maxSize: 15
     property int nodeSize: 40
     property int graphYOffset: 30
@@ -88,6 +88,7 @@ Item {
             }
 
             extractedNode.visible = false
+            extractedNode.scale = 0
             extractedNode.x = PositionCalculator.calculateNodeXOffset(0, graphContainer.width, nodeSize)
             extractedNode.y = PositionCalculator.calculateNodeYOffset(0, 100, graphYOffset, nodeSize)
 
@@ -463,7 +464,7 @@ Item {
                 StyledButton {
                     id: backButton
                     anchors.verticalCenter: parent.verticalCenter
-                    text: globals.language === "hu" ? "Vissza" : "Back"
+                    text: globals.language === "hu" ? "Eredeti fa szerkesztése" : "Edit original tree"
 
                     onClicked: {
                         switchPage("Editor")
@@ -496,6 +497,18 @@ Item {
 
                             visualizerModel.stepForward()
                         }
+                    }
+                }
+
+                StyledButton {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    text: globals.language === "hu" ? "Jelenlegi fa szerkesztése" : "Edit current tree"
+
+                    onClicked: {
+                        globals.currentlyEditedTree = visualizerModel.tree
+
+                        switchPage("Editor")
                     }
                 }
             }

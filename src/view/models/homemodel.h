@@ -18,8 +18,6 @@ public:
 
     QVariantList getSavedVisualizations() const { return m_savedVisualizations; }
 
-    Q_INVOKABLE void openVisualization(int index) const;
-
     Q_INVOKABLE void deleteVisualization(int index);
 
     Q_INVOKABLE QVariantList generateRandomArray(int arraySize);
