@@ -39,7 +39,7 @@ Item {
                     Layout.alignment: Qt.AlignRight
                     id: settingsButton
                     width: 150
-                    text: globals.language === "hu" ? "Beállítások" : "Settings"
+                    text: globals.language === "hu" ? "Beállítások / Settings" : "Settings / Beállítások"
 
                     onClicked: {
                         switchPage("Settings")

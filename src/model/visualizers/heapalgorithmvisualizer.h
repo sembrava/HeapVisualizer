@@ -83,8 +83,8 @@ protected:
     static QString rootKeyChangedExplanation(int rootKey, int lastNodeKey)
     {
         return QString::fromStdString(g_qmlGlobals.getLanguage() == "hu"
-        ? "A gyökér kulcsát (" + std::to_string(rootKey) + ") kicseréljuk az utolsó csúcs kulcsával (" + std::to_string(lastNodeKey) + ")"
-        : "The root key (" + std::to_string(rootKey) + ") is replaced with the key of the last node (" + std::to_string(lastNodeKey) + ")");
+        ? "A gyökér kulcsát (" + std::to_string(rootKey) + ") felülírjuk az utolsó csúcs kulcsával (" + std::to_string(lastNodeKey) + ")"
+        : "The root key (" + std::to_string(rootKey) + ") is overwritten with the key of the last node (" + std::to_string(lastNodeKey) + ")");
     }
 
     static QString removeMaxFinishedExplanation()
